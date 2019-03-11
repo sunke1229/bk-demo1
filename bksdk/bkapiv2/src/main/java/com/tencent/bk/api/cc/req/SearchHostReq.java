@@ -66,4 +66,8 @@ public class SearchHostReq extends ApiReq {
      * 可选: 按表达式搜索
      */
     private String pattern;
+
+    @JsonProperty("bk_biz_id")
+    private Integer bkBizId;
+
 }

@@ -9,7 +9,7 @@
  * init包为Bean初始化的配置类
  * model包是定义一些数据库实体类
  * repository包也就是传统DAO的另一种说法，包含了数据库的操作，JPA
- * service 为业务类定义和实现
+ * serviceDemo 为业务类定义和实现
  * web 为封装了Controller等实现
  */
 package com.tencent.examples;

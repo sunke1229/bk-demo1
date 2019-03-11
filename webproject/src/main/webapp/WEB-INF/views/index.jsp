@@ -1,36 +1,132 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<html>
-<head><title>首页</title></head>
-<body>
-<script>
-    $(document).ready(function() {
-        $("#home-tab").addClass("king-navbar-active");
-    });
-</script>
-<div class="home-page">
-    <div class="page-arrow">
-        <div class="container">
-            <!-- 蓝鲸智云开发框架说明  Start -->
-            <div class="tc title-word">
-                <p>欢迎使用蓝鲸智云集成平台</p>
+<!---这相当于一个配置，该配置用于左侧菜单栏的显示，id为subPageName  [内容]为该页面的唯一标志  对应于outer.jsp文件中的左侧菜单栏的id-->
+<div id ="subPageName" hidden >menuFirstPage</div>
+<div id="page-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="row page-header-box">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    概述
+                </h1>
             </div>
-            <div class="tc title-word-second">
-                <p>蓝鲸智云开发框架
-                    <small class="pl10">助力你的自动化</small>
-                </p>
-            </div>
-            <hr class="cutting-line">
-            <div class="tc frame-explain-text">
-                <p>您现在打开的应用是由蓝鲸智云示例代码生成的，该示例代码称为“APP开发框架”。</p>
-                <p>蓝鲸智云集成平台（PaaS）提供了完善的前后台开发框架、调度引擎、公共组件等模块，帮助业务的产品和技术人员快速构建低成本、免运维的支撑工具和运营系统。</p>
-                <p>若想体验快速开发应用的功能，请前往<a class="developer-center" href="${sessionScope.BK_PAAS_HOST}" target="_blank">“开发者中心”</a>。
-                </p>
-            </div>
-            <!-- 蓝鲸智云开发框架说明  End -->
         </div>
+        <!-- /.row -->
+
+        <div class="row data-panel">
+            <div class="col-lg-3 col-md-6">
+                <div class="king-widget2">
+                    <div class="king-widget-content p20 bg-info">
+                        <div class="king-counter king-counter-lg">
+                            <div class="king-counter-label text-uppercase f16">we have</div>
+                            <div class="king-counter-number-group">
+                                <span class="king-counter-number white">260</span>
+                                <span class="king-counter-icon ml10 white">
+                                            <i class="fa fa-image"></i>
+                                        </span>
+                            </div>
+                            <div class="king-counter-label text-uppercase f16">followers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="king-widget2">
+                    <div class="king-widget-content p20 bg-info">
+                        <div class="king-counter king-counter-lg">
+                            <div class="king-counter-label text-uppercase f16">we have</div>
+                            <div class="king-counter-number-group">
+                                <span class="king-counter-number white">300</span>
+                                <span class="king-counter-icon ml10 white">
+                                            <i class="fa fa-music"></i>
+                                        </span>
+                            </div>
+                            <div class="king-counter-label text-uppercase f16">followers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="king-widget2">
+                    <div class="king-widget-content p20 bg-info">
+                        <div class="king-counter king-counter-lg">
+                            <div class="king-counter-label text-uppercase f16">we have</div>
+                            <div class="king-counter-number-group">
+                                <span class="king-counter-number white">110</span>
+                                <span class="king-counter-icon ml10 white">
+                                        <i class="fa fa-envelope"></i>
+                                    </span>
+                            </div>
+                            <div class="king-counter-label text-uppercase f16">followers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="king-widget2">
+                    <div class="king-widget-content p20 bg-info">
+                        <div class="king-counter king-counter-lg">
+                            <div class="king-counter-label text-uppercase f16">we have</div>
+                            <div class="king-counter-number-group">
+                                <span class="king-counter-number white">50</span>
+                                <span class="king-counter-number-related white">+</span>
+                            </div>
+                            <div class="king-counter-label text-uppercase f16">followers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <div class="row charts">
+            <div class="col-md-6">
+                <div class="king-block king-block-bordered mb30">
+                    <div class="king-block-header">
+                        <h3 class="king-block-title">历史执行情况</h3>
+                    </div>
+                    <div class="king-block-content">
+                        <div class="chart" id="chartA"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="king-block king-block-bordered mb30">
+                    <div class="king-block-header">
+                        <h3 class="king-block-title">数据</h3>
+                    </div>
+                    <div class="king-block-content">
+                        <div class="chart" id="chartC"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="king-block king-block-bordered mb30">
+                    <div class="king-block-header">
+                        <h3 class="king-block-title">数据</h3>
+                    </div>
+                    <div class="king-block-content">
+                        <div class="chart" id="chartB"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="king-block king-block-bordered mb30">
+                    <div class="king-block-header">
+                        <h3 class="king-block-title">数据</h3>
+                    </div>
+                    <div class="king-block-content">
+                        <div class="chart" id="chartD"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.row -->
+
     </div>
+    <!-- /.container-fluid -->
+
 </div>
-</body>
-</html>
-
-

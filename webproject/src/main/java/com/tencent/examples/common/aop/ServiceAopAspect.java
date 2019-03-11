@@ -52,7 +52,7 @@ public class ServiceAopAspect {
             if (t instanceof BusinessException) {
                 code = ((BusinessException) t).getCode();
             }
-            LOG.error("service={}| method={}| args={}| exception:{}", serviceName, methodName, JsonUtil.skipLogFields(args), Throwables.getStackTraceAsString(t));
+            LOG.error("serviceDemo={}| method={}| args={}| exception:{}", serviceName, methodName, JsonUtil.skipLogFields(args), Throwables.getStackTraceAsString(t));
             resp = RespHelper.fail(code, t.getMessage());
 
         } finally {
@@ -60,10 +60,10 @@ public class ServiceAopAspect {
             timeWatch.stop();
 
             if (LOG.isDebugEnabled()) {
-                LOG.debug("service={}| method={}| useTime={}| args={}| resp={}",
+                LOG.debug("serviceDemo={}| method={}| useTime={}| args={}| resp={}",
                         serviceName, methodName, timeWatch.getTotalTimeMillis(), JsonUtil.skipLogFields(args), resp != null ? JsonUtil.skipLogFields(resp) : resp);
             } else if (ok) {
-                LOG.info("service={}| method={}| useTime={}| ", serviceName, methodName, timeWatch.getTotalTimeMillis());
+                LOG.info("serviceDemo={}| method={}| useTime={}| ", serviceName, methodName, timeWatch.getTotalTimeMillis());
             }
 
         }

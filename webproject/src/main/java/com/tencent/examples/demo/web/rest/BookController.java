@@ -132,9 +132,7 @@ public class BookController extends BaseController {
             specification=new Specification<Book>() {
                 @Override
                 public Predicate toPredicate(Root<Book> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-                    Path<String> namepath=root.get("name");
-                    CriteriaQuery<?> where = query.where(builder.like(namepath, "%" + finallikename + "%"));
-
+                    CriteriaQuery<?> where = query.where(builder.like(root.get("name"), "%" + finallikename + "%"));
                     return null;
                 }
             };

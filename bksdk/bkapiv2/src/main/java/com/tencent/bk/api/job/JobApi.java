@@ -98,6 +98,25 @@ public class JobApi extends Api {
     }
 
     /**
+     * 查询脚本列表
+     */
+    public ApiResp<ScriptList> getScriptList(GetScriptListReq esbReq) {
+        return invokePost("/api/c/compapi/v2/job/get_script_list/", esbReq,
+                new TypeReference<ApiResp<ScriptList>>() {
+                });
+    }
+
+
+    /**
+     * 查询脚本列表
+     */
+    public ApiResp<Script> getScriptDetail(GetScriptDetailReq esbReq) {
+        return invokePost("/api/c/compapi/v2/job/get_script_detail/", esbReq,
+                new TypeReference<ApiResp<Script>>() {
+                });
+    }
+
+    /**
      * 新建或保存定时作业；新建定时作业，作业状态默认为暂停；操作者必须是业务的创建人或运维
      */
     public ApiResp<CronJobId> saveCron(SaveCronReq esbReq) {
