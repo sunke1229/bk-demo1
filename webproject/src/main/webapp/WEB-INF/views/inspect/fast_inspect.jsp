@@ -393,7 +393,7 @@
         $.ajax({
             method: 'POST',
             url: "${sessionScope.SITE_URL}rest/inspect/execute",
-            data: JSON.stringify(jobData),
+            data: JSON.stringify({"type":2,"referenceId":3}),
             success: function(result){
                 $('#runFastInspect').removeAttr("disabled");
                 window.location.href="${sessionScope.SITE_URL}inspect/history/list";
