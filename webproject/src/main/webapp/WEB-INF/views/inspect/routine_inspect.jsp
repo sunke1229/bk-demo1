@@ -241,29 +241,17 @@
     }
     loadTable();
     function runInspect(id){
-        var jobData = {
-            type:2,
-            referenceId:id
-        };
-        $.ajax({
-            method: 'POST',
-            url: "${sessionScope.SITE_URL}rest/inspect/execute",
-            data: JSON.stringify(jobData),
-            success: function(result){
-                $('#runFastInspect').removeAttr("disabled");
-                window.location.href="${sessionScope.SITE_URL}inspect/history/list";
-            },
-            dataType: "json",
-            headers: {'Content-Type': 'application/json'}
-        });
-        /*dialog({
+        dialog({
             width: 260,
             title: '提示',
             content: '确定要执行该常规巡检吗？',
             okValue: '确定',
             ok: function() {
-
-                /!*$.ajax({
+                var jobData = {
+                    type:2,
+                    referenceId:id
+                };
+                $.ajax({
                     method: 'POST',
                     url: "${sessionScope.SITE_URL}rest/inspect/execute",
                     data: JSON.stringify(jobData),
@@ -285,7 +273,7 @@
                     },
                     dataType: "json",
                     headers: {'Content-Type': 'application/json'}
-                });*!/
+                });
 
             },
             cancelValue: '取消',
@@ -293,7 +281,7 @@
             },
             onshow: function() {
             },
-        }).show();*/
+        }).show();
 
 
         console.log(id+"run");
