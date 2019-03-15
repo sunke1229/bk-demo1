@@ -242,7 +242,7 @@
         $("#business").append("<li><a href=\"javascript:;\"><span class=\"label label-default\">加载中</span></a> </li>");
         $.ajax({
             type: "GET",
-            url: "/rest/system/biz/list",
+            url: "${sessionScope.SITE_URL}rest/system/biz/list",
             cache: false, //禁用缓存
             dataType: "json",
             success: function (result) {
@@ -268,7 +268,7 @@
     function changeBusiness(id) {
         $.ajax({
             type: "POST",
-            url: "/rest/system/changeBiz?bizId="+id,
+            url: "${sessionScope.SITE_URL}rest/system/changeBiz?bizId="+id,
             cache: false, //禁用缓存
             dataType: "json",
             success: function (result) {
