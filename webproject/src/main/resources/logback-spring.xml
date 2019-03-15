@@ -39,6 +39,9 @@
         <logger name="com.tencent.bk" level="WARN" additivity="false">
             <appender-ref ref="FRAMEWORK_LOG"/>
         </logger>
+        <logger name="com.bocloud.blueking" level="WARN" additivity="false">
+            <appender-ref ref="FRAMEWORK_LOG"/>
+        </logger>
         <root level="WARN"> <!-- Spring等框架类的日志级别 生产一般是稳定环境用WARN，根据自已情况决定-->
             <appender-ref ref="FRAMEWORK_LOG"/>
         </root>
