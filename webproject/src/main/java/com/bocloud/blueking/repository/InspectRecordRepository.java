@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
+
 
 public interface InspectRecordRepository extends CrudRepository<InspectRecord,Long>, JpaRepository<InspectRecord, Long>,JpaSpecificationExecutor<InspectRecord> {
     @Modifying
@@ -15,4 +17,6 @@ public interface InspectRecordRepository extends CrudRepository<InspectRecord,Lo
     @Modifying
     @Query(value = "update  InspectRecord set isDeleted = true , modifierId = ?2 ,modifyTime = now() where id =?1" )
     Integer delete(Long id , Long modifierId);
+
+    List<InspectRecord> findAllByStatus(Integer status);
 }

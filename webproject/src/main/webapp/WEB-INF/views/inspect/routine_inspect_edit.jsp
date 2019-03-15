@@ -24,15 +24,17 @@
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/datatables-1.10.7/jquery.dataTables.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/datatables-1.10.7/dataTables.bootstrap.js"></script>
 
+<!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
+<!--[if lt IE 9]> -->
 
-
+<input  hidden id="routineInspectId" value="${routineInspectId}"/>
 <div id="page-wrapper">
     <section style="padding: 0px 15px;">
         <ol class="breadcrumb"
             style="margin-bottom:0;border-bottom:1px solid #eee;background:none;border-radius:0;padding-left:5px;">
-            <li id="breadcrumb-2"><i class="bk-icon icons-zuoyezhihang"></i> 巡检管理</li>
+            <li id="breadcrumb-2"><i class="bk-icon icons-zuoyezhihang"></i> 常规巡检</li>
             <li id="breadcrumb-3">
-                快速巡检
+                编辑
             </li>
         </ol>
     </section>
@@ -41,6 +43,7 @@
             <div class='panel-body'>
                 <!-- 右侧内部表单 start -->
                 <form class="form-horizontal">
+                    <a href="/inspect/routine" class="bk-icon icon-back2">返回</a>
                     <div class="king-block king-block-bordered king-block-themed m5">
                         <div class="king-block-content">
                             <div class="form-group clearfix ">
@@ -72,20 +75,19 @@
                                     <ul class="list-group" id="serverList">
                                     </ul>
                                 </div>
-
                             </div>
-
                             <div class="form-group clearfix">
                                 <label class="col-sm-2 control-label bk-lh30 pt0">巡检来源<span class="red">&nbsp;*</span>：</label>
                                 <div class="col-sm-9">
-                                    <label class="radio-inline"> <input  checked type="radio" value="0" name="inspectType">公共脚本</label>
-                                    <%--<label class="radio-inline"> <input  checked type="radio" value="1" name="inspectType">巡检模板</label>--%>
+                                    <label class="radio-inline"> <input   type="radio" value="0" name="inspectType">公共脚本</label>
+                                    <label class="radio-inline"> <input   type="radio" value="1" name="inspectType">巡检模板</label>
                                 </div>
                             </div>
                             <div class="form-group"  hidden id="inspectionTemplate">
                                 <label class="col-sm-2 control-label bk-lh30 pt0">模板名称：</label>
                                 <label class="col-sm-2 control-label bk-lh30 pt0">1</label>
                             </div>
+
                             <div id="commonScript">
                                 <div  class="form-group" >
                                     <label class="col-sm-2 control-label bk-lh30 pt0" >脚本名称：</label>
@@ -105,11 +107,8 @@
                                             <input type="hidden" class="bigdrop"  style="width: 300px; display: none;" title="" value="2" tabindex="-1">
                                         </div>
                                     </div>
-
-
                                 </div>
-
-                                <div class="form-group has-feedback clearfix ">
+                                <div  class="form-group" >
                                     <label class="control-label col-sm-2 pt0" for="introduction">脚本内容：</label>
                                     <div class="col-sm-9" style="border: 0px solid #ddd;" id="editor2_demo1">
 
@@ -117,10 +116,11 @@
                                         <!-- 代码文本 start -->
                                         <pre id="code_box" style="display:none;"></pre>
                                         <!-- 代码文本 end -->
-
                                     </div>
                                 </div>
                             </div>
+
+
 
                             <div class="form-group has-feedback clearfix ">
                                 <label class="control-label col-sm-2 pt0" for="introduction">参数：</label>
@@ -137,7 +137,7 @@
                             </div>
                             <div class="form-group clearfix">
                                 <div class="col-sm-9 col-sm-offset-3">
-                                    <button type="button" id="runFastInspect" class="king-btn mr10  king-success" onclick="">执行</button>
+                                    <button type="button" id="saveInspect" class="king-btn mr10  king-success" onclick="">保存</button>
                                     <button type="button" class="king-btn king-default ">取消</button>
                                 </div>
                             </div>
@@ -158,79 +158,13 @@
 
 
 
-<script type="text/javascript">
-    var editor = CodeMirror.fromTextArea(document.getElementById("editor2_demo"), {
-        lineNumbers: true,
-        mode: "shell",
-        matchBrackets: true,
-        theme:'monokai', //编辑器主题
-        readOnly:true,
-        value:""
-    });
 
-
-    // 脚本来源
-    $('input[name=inspectType]:radio').click(function(){
-        var type = this.value;
-        $("input:radio[name=inspectType][value!="+type+"]").removeAttr("checked");//反选其他
-        $(this).attr("checked",true);
-        if(type == 0){
-            $('#commonScript').show(0);
-            $('#inspectionTemplate').hide(0);
-        }
-        else if(type == 1 ){
-            $('#commonScript').hide(0);
-            $('#inspectionTemplate').show(0);
-        }
-    });
-    
-    
-    function loadScriptList() {
-        var scriptSelect = $("#script_list");
-        $.get("/rest/inspect/script/list", function(result){
-            result = JSON.parse(result)
-            if(result.result==true){
-                var data = result.data.data;
-                var bkArr = data.map(function (item) {
-                    return { id: item.id, text: item.name };
-                });
-                scriptSelect.select2({
-                    data : bkArr,
-                    placeholder: "选择脚本",
-                });
-            }
-        });
-    }
-
-
-
-
-    $("#script_list").on("change", function(e) {
-           var id = e.val;
-            $.get("/rest/inspect/script/detail/"+id, function(result){
-                result = JSON.parse(result)
-                var allScriptType = ["","shell","bat","perl","python","powershell","sql"];
-
-                if(result.result==true){
-                    editor.mode=allScriptType[result.data.type];
-                    editor.setValue(result.data.content);
-                    $('#script_tag').val(0);
-                    $("#script_tag").select2({
-                        data :  [{ id: 0, text: result.data.tag }],
-                        placeholder: "选择版本"
-                    });
-                }
-            });
-            }
-        );
-    onload = loadScriptList();
-</script>
 
 <script type="text/javascript">
     //模态对话框
     $("#chooseHost").click(function() {
         var selectOld = new Map();
-        selected.forEach(function (value, key, map) {
+        selected.forEach(function (value, key, map) {//深拷贝
             selectOld.set(key,value);
         });
         var d = dialog({
@@ -239,38 +173,16 @@
             content: "<table id=\"example\" style=\"width:100%\" role=\"grid\">\n" +
             "    <thead>\n" +
             "    <tr role=\"row\">\n" +
-            "        <th class=\"sorting_disabled\" rowspan=\"1\" colspan=\"1\" >主机名</th>\n" +
-            "        <th class=\"sorting_disabled\" rowspan=\"1\" colspan=\"1\" >主机ip</th>\n" +
-            "        <th class=\"sorting_disabled\" rowspan=\"1\" colspan=\"1\" >操作系统</th>\n" +
-            "        <th class=\"sorting_disabled\" rowspan=\"1\" colspan=\"1\" >系统位数</th>\n" +
+            "        <th class=\"sorting_disabled\" rowspan=\"1\" colspan=\"1\" style=\"width: 217px;\">主机名</th>\n" +
+            "        <th class=\"sorting_disabled\" rowspan=\"1\" colspan=\"1\" style=\"width: 136px;\">主机ip</th>\n" +
+            "        <th class=\"sorting_disabled\" rowspan=\"1\" colspan=\"1\" style=\"width: 119px;\">操作系统</th>\n" +
+            "        <th class=\"sorting_disabled\" rowspan=\"1\" colspan=\"1\" style=\"width: 141px;\">系统位数</th>\n" +
             "    </tr>\n" +
             "    </thead>\n" +
             "</table>\n",
             okValue: '确定',
             ok: function() {
-                $('#serverList').empty();
-                if(selected.size>0){
-                    selected.forEach(function (value, key) {
-                        var ip = key;
-                        var serverItem = "<li id=\"server_"+ip+"\" class=\"list-group-item\">" + ip +
-                            "                <button  style=\"float: right\" type=\"button\"   class=\"btn btn-primary btn-danger btn-xs\">\n" +
-                            "                    <span  class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\n" +
-                            "                </button>\n" +
-                            "              </li>";
-                        $('#serverList').append(serverItem);
-                    });
-                    $('#serverList li button').on('click', function () {
-                        var selectIp = $(this).parent().attr('id').substring(7);
-                        selected.delete(selectIp);
-                        if(selected.size<=0){
-                            $("#chooseHostButton").text("选择服务器");
-                        }
-                        $(this).parent().remove();
-                    } );
-                    $("#chooseHostButton").text("重新选择服务器");
-                }else{
-                    $("#chooseHostButton").text("选择服务器");
-                }
+                loadServerHostList();
             },
             cancelValue: '取消',
             cancel: function() {
@@ -280,6 +192,32 @@
         d.showModal();
         loadTable();
     });
+
+    function loadServerHostList(){
+        $('#serverList').empty();
+        if(selected.size>0){
+            selected.forEach(function (value, key) {
+                var ip = key;
+                var serverItem = "<li id=\"server_"+ip+"\" class=\"list-group-item\">" + ip +
+                    "                <button  style=\"float: right\" type=\"button\"   class=\"btn btn-primary btn-danger btn-xs\">\n" +
+                    "                    <span  class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\n" +
+                    "                </button>\n" +
+                    "              </li>";
+                $('#serverList').append(serverItem);
+            });
+            $('#serverList li button').on('click', function () {
+                var selectIp = $(this).parent().attr('id').substring(7);
+                selected.delete(selectIp);
+                if(selected.size<=0){
+                    $("#chooseHostButton").text("选择服务器");
+                }
+                $(this).parent().remove();
+            } );
+            $("#chooseHostButton").text("重新选择服务器");
+        }else{
+            $("#chooseHostButton").text("选择服务器");
+        }
+    }
 </script>
 
 <script type="text/javascript">
@@ -361,8 +299,8 @@
         $('#example tbody ').on('click', 'tr', function () {
             var index = $(this).index();
             var rowData = $('#example').DataTable().data().toArray()[index];
-            var ip = this.id;
             var bkCloudId =rowData["4"];
+            var ip = this.id;
             if ( !selected.get(ip)) {
                 selected.set(ip,{ip:ip,bkCloudId:bkCloudId});
             } else {
@@ -375,28 +313,40 @@
 
 
 
-    $('#runFastInspect').on('click', function () {
-        $('#runFastInspect').attr("disabled","true");
+    $('#saveInspect').on('click', function () {
+        $('#saveInspect').attr("disabled","true");
         var ipList = [];
         selected.forEach(function (value) {
             ipList.push(value);
         });
-        var jobData = {
-            type:$("input[name=inspectType]:radio").val(),
-            ipList:ipList,
-            param:$("#paramData").val()||"",
-            timeout:$("#timeoutData").val()||"",
-            referenceId:$("#script_list").val()||"",
-            account:$('#accountData').val()||"",
-            name:$('#inspectName').val()||""
+
+
+        var routineInspectData = {
+            id:$('#routineInspectId').val(),
+            type:$("input[name='inspectType'][checked]").val(),
+            name:$('#inspectName').val()||"",
+            inspectStep:{
+                stepOrder:0,
+                ipList:JSON.stringify(ipList),
+                param:$("#paramData").val()||"",
+                timeout:$("#timeoutData").val()||"",
+                scriptId:$("#script_list").val()||"",
+                account:$('#accountData').val()||"",
+            }
         };
+        console.log(routineInspectData);
         $.ajax({
             method: 'POST',
-            url: "/rest/inspect/execute",
-            data: JSON.stringify(jobData),
+            url: "/rest/inspect/routine/update",
+            data: JSON.stringify(routineInspectData),
             success: function(result){
-                $('#runFastInspect').removeAttr("disabled");
-                window.location.href="/inspect/history/list";
+                $('#saveInspect').removeAttr("disabled");
+                if(result.success==true){
+                    console.log(result);
+                    window.location.href="/inspect/routine";
+                }else{
+                    alert(result.message);
+                }
             },
             dataType: "json",
             headers: {'Content-Type': 'application/json'}
@@ -404,4 +354,103 @@
     } );
 
 
+</script>
+
+<script type="text/javascript">
+    var editor = CodeMirror.fromTextArea(document.getElementById("editor2_demo"), {
+        lineNumbers: true,
+        mode: "shell",
+        matchBrackets: true,
+        theme:'monokai', //编辑器主题
+        readOnly:true,
+        value:""
+    });
+
+    // 脚本来源
+    $('input[name=inspectType]:radio').click(function(){
+        var type = this.value;
+        $("input:radio[name=inspectType][value!="+type+"]").removeAttr("checked");//反选其他
+        $(this).attr("checked",true);
+        if(type == 0){
+            $('#commonScript').show(0);
+            $('#inspectionTemplate').hide(0);
+        }
+        else if(type == 1 ){
+            $('#commonScript').hide(0);
+            $('#inspectionTemplate').show(0);
+        }
+    });
+
+
+    function loadScriptList(scriptId) {
+        var scriptSelect = $("#script_list");
+        $("#script_list").val(scriptId);
+        $.get("/rest/inspect/script/list", function(result){
+            result = JSON.parse(result)
+            if(result&&result.result==true){
+                var data = result.data.data;
+                var bkArr = data.map(function (item) {
+                    return { id: item.id, text: item.name };
+                });
+                scriptSelect.select2({
+                    data : bkArr,
+                    placeholder: "选择脚本"
+                });
+                if(scriptId){
+                    loadScriptTag({val:scriptId})
+                }
+            }
+        });
+    }
+
+
+    function loadScriptTag(e) {
+        var id = e.val;
+        $.get("/rest/inspect/script/detail/"+id, function(result){
+            result = JSON.parse(result)
+            var allScriptType = ["","shell","bat","perl","python","powershell","sql"];
+
+            if(result.result==true){
+                editor.mode=allScriptType[result.data.type];
+                editor.setValue(result.data.content);
+                $('#script_tag').val(0);
+                $("#script_tag").select2({
+                    data :  [{ id: 0, text: result.data.tag }],
+                    placeholder: "选择版本"
+                });
+
+            }
+        });
+    }
+
+    $("#script_list").on("change", loadScriptTag);
+
+    function loadRoutineInspect() {
+        var id = $("#routineInspectId").val();
+        $.ajax({
+            type: "GET",
+            url: "/rest/inspect/routine/"+id,
+            cache: false, //禁用缓存
+            dataType: "json",
+            success: function (result) {
+                if(result.success==true){
+                    $("input:radio[name=inspectType][value="+result.data.type+"]").click();
+                    $('#inspectName').val(result.data.name);
+                    var step = result.data.inspectStep;
+                    $("#paramData").val(step.param);
+                    $("#timeoutData").val(step.timeout);
+                    $('#accountData').val(step.account);
+                    var ipList = JSON.parse(step.ipList);
+                    if(ipList){
+                        ipList.forEach(function (item) {
+                            selected.set(item.ip,item);
+                        });
+                    }
+                    loadServerHostList(selected);
+                    loadScriptList(step.scriptId);
+                }
+            }
+        });
+    }
+    onload = loadRoutineInspect();
 </script>

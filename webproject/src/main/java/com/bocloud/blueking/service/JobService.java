@@ -12,6 +12,6 @@ import java.util.List;
 public interface JobService {
     RespDto<InspectRecord>  execute(JobData data,Long userId ,String userName,Long bizId, HttpServletRequest request) throws BusinessException;
 
-    void synInspectRecord(List<InspectRecord> unfinishedRecord);
+    void synInspectRecord(InspectRecord unfinishedRecord);
 
 }

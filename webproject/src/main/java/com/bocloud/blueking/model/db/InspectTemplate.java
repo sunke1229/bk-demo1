@@ -16,16 +16,19 @@ public class InspectTemplate  extends GenericEntity {
     private Integer type;
 
     @Column
-    private Long referenceId;
+    private Long referenceId;//if type = REFERENCE
 
+    @Column
+    private String stepIds;  //if type = CUSTOM
     /*@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name="template_id",referencedColumnName = "id",foreignKey = @ForeignKey(name="none"))*/
     @Transient
-    private List<InspectStep> inspectSteps;
-
+    private List<InspectStep> inspectSteps;  //--->根据stepIds查询
 
     public enum Type {
         //自定义 ， 引用
         CUSTOM , REFERENCE
     }
+
+    //TODO 开发时注意bizId
 }

@@ -33,8 +33,9 @@ public class InspectRecordJobInstance extends GenericEntity {
     @Column
     private Long referenceInstanceId;
 
-    @Column
+    @Column(columnDefinition="TEXT")
     private String instanceContent;
 
 
+    //TODO 注意bizId
 }

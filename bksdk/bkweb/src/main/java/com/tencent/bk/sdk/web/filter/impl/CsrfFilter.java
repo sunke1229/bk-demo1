@@ -52,6 +52,10 @@ public class CsrfFilter extends BkAbstractFilter {
         try {
             synchronized (session.getId().intern()) {
                 // 首页访问,初始化处理
+                if(requestUri.equals(bkCoreProperties.getCallbackPath())){
+                    filterChain.doFilter(servletRequest, servletResponse);
+                    return;
+                }
                 if (requestUri.equals("/")) {
                     FilterUtil.initCsrf(request, response, session);
                     //GET|HEAD|OPTIONS|TRACE

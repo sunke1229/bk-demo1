@@ -18,14 +18,20 @@ public class RoutineInspect extends GenericEntity {
     @Transient
     private InspectStep inspectStep;
 
-
-
     @Column
-    private Long referenceId;//引用的脚本/模板ID
+    private Long referenceId;
 
     @Column
     private Integer type;
 
+    @Column
+    private Long bizId;
+
+    @Transient
+    private String creatorName;
+
+    @Transient
+    private String modifierName;
 
     public enum  Type{
         STEP,TEMPLATE

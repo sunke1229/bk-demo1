@@ -1,6 +1,6 @@
 package com.bocloud.blueking.service.impl;
 
-import com.bocloud.blueking.common.exception.BusinessException;
+import com.bocloud.blueking.common.util.IdsUtil;
 import com.bocloud.blueking.common.util.IgnorePropertiesUtil;
 import com.bocloud.blueking.dto.RespDto;
 import com.bocloud.blueking.helper.RespHelper;
@@ -36,7 +36,8 @@ public class InspectTemplateServiceImpl implements InspectTemplateService {
             if(inspectTemplate.getType().equals(InspectTemplate.Type.CUSTOM.ordinal())){
                 Long templateId = inspectTemplate.getId();
                 if(templateId!=null){
-                    List<InspectStep> steps =  inspectStepRepository.findByInspectTemplateId(templateId);
+                    List<Long> idsList = IdsUtil.transformStringToLongList(inspectTemplate.getStepIds());
+                    List<InspectStep> steps =  inspectStepRepository.findByIdIn(idsList);
                     inspectTemplate.setInspectSteps(steps);
                 }else{
                     //TODO 报错或忽略
@@ -75,7 +76,7 @@ public class InspectTemplateServiceImpl implements InspectTemplateService {
         if(beanInDb==null){
             return  RespHelper.fail(9999,"要删除的巡检模板不存在");
         }
-        inspectStepRepository.deleteByInspectTemplateId(id,userId);
+        inspectStepRepository.deleteByIdsIn(beanInDb.getStepIds(),userId);
         inspectTemplateRepository.delete(id,userId);
         return  RespHelper.ok(id);
     }
@@ -91,7 +92,7 @@ public class InspectTemplateServiceImpl implements InspectTemplateService {
             }
             BeanUtils.copyProperties(beanInDb,inspectTemplate, IgnorePropertiesUtil.getNullPropertyNames(beanInDb));
             inspectTemplate.modifyNow(userId);
-            inspectStepRepository.deleteByInspectTemplateId(inspectTemplate.getId(),userId);
+            inspectStepRepository.deleteByIdsIn(inspectTemplate.getStepIds() ,userId);
         }else{
             //TODO ERROR
         }
@@ -101,16 +102,15 @@ public class InspectTemplateServiceImpl implements InspectTemplateService {
 
 
     private InspectTemplate saveBase(InspectTemplate inspectTemplate,Long userId){
-        InspectTemplate newInspectTemplate = inspectTemplateRepository.save(inspectTemplate);
-        Long templateId = newInspectTemplate.getId();
         List<InspectStep> steps = inspectTemplate.getInspectSteps();
         if(steps!=null){
             for(InspectStep inspectStep :steps){
                 inspectStep.createNow(userId);
-                inspectStep.setInspectTemplateId(templateId);
                 inspectStepRepository.save(inspectStep);
             }
         }
-        return inspectTemplate;
+        String idsString  = IdsUtil.getIdsStringFromBeanList(steps);
+        inspectTemplate.setStepIds(idsString);
+        return inspectTemplateRepository.save(inspectTemplate);
     }
 }

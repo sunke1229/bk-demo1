@@ -54,6 +54,7 @@ public abstract class BaseController {
      * @return
      */
     protected Long getLocalUserId() {
+        //return  6L;
         BkUser bkUser = FilterUtil.getSessionAttribute(session, BkConsts.USER_SESSION, BkUser.class);
         return  userService.findIdByUsername(bkUser.getUsername());
     }
@@ -63,6 +64,7 @@ public abstract class BaseController {
      * @return
      */
     protected User getLocalUser() {
+        //return  userService.findByUsername("sunke");
         BkUser bkUser = FilterUtil.getSessionAttribute(session, BkConsts.USER_SESSION, BkUser.class);
         return  userService.findByUsername(bkUser.getUsername());
     }

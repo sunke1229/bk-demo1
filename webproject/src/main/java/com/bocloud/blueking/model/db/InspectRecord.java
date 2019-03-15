@@ -17,13 +17,13 @@ import java.util.List;
 public class InspectRecord extends GenericEntity {
 
     @Column
-    private Integer type;
+    private Integer type;  //JobData . Type
 
     @Column
-    private Integer status = Status.CREATED.ordinal();
+    private Integer status = Status.RUNNING.ordinal();
     public enum Status {
         //自定义 ， 引用
-        CREATED , RUNNING ,SUCCESS,ERROR
+        RUNNING ,SUCCESS,ERROR
     }
 
     @Transient

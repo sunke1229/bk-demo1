@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 /**
@@ -45,6 +46,7 @@ import org.springframework.context.annotation.PropertySource;
         "com.bocloud.blueking"  //示例类
 })
 @ServletComponentScan
+@EnableScheduling
 public class BkWebApplication {
 
     public static void main(String[] args) {

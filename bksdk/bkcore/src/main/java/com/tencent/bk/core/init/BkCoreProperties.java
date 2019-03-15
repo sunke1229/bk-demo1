@@ -60,4 +60,8 @@ public class BkCoreProperties {
      */
     @Value("${app.filter.csrf.uri-patterns:/rest/*}")
     private String appCsrfFilterUriPattern;
+
+    @Value("${callback.path}")
+    private String callbackPath;
+
 }

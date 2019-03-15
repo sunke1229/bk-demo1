@@ -4,6 +4,7 @@
 
 package com.bocloud.blueking.service;
 
+import com.bocloud.blueking.common.exception.BusinessException;
 import com.bocloud.blueking.dto.RespDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,9 +23,9 @@ public interface BaseCommonService<T, ID extends Serializable> {
 
     RespDto<Page<T>> findAll(Specification<T> spec, Pageable pageable);
 
-    RespDto<T> save(T userDto,Long userId);
+    RespDto<T> save(T userDto,Long userId) ;
 
-    RespDto<T> update(T userDto,Long userId);
+    RespDto<T> update(T userDto,Long userId) ;
 
     RespDto<ID> delete(ID id,Long userId);
 

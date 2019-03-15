@@ -10,7 +10,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 
-public interface InspectRecordItemRepository extends CrudRepository<InspectRecordJobInstance,Long>, JpaRepository<InspectRecordJobInstance, Long>,JpaSpecificationExecutor<InspectRecordJobInstance> {
+public interface InspectRecordJobInstanceRepository extends CrudRepository<InspectRecordJobInstance,Long>, JpaRepository<InspectRecordJobInstance, Long>,JpaSpecificationExecutor<InspectRecordJobInstance> {
     List<InspectRecordJobInstance> findByInspectRecordId(Long id);
 
     @Modifying

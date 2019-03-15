@@ -1,8 +1,13 @@
 package com.bocloud.blueking.model.db;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.deser.std.DateDeserializers;
+import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 import lombok.Data;
-import org.hibernate.annotations.Where;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -25,13 +30,15 @@ public class GenericEntity implements Serializable {
     private String name;
 
     @Column
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date createTime;
 
     @Column
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date modifyTime;
 
     @Column
-    private Long createrId;
+    private Long creatorId;
 
     @Column
     private Long modifierId;
@@ -39,9 +46,9 @@ public class GenericEntity implements Serializable {
     @Column
     private Boolean isDeleted = false;
 
-    public  void createNow(Long createrId){
-        this.createrId = createrId;
-        this.modifierId = createrId;
+    public  void createNow(Long creatorId){
+        this.creatorId = creatorId;
+        this.modifierId = creatorId;
         this.createTime = new Date();
         this.modifyTime = this.createTime;
     }

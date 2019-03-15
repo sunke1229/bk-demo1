@@ -24,15 +24,16 @@
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/datatables-1.10.7/jquery.dataTables.js"></script>
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/datatables-1.10.7/dataTables.bootstrap.js"></script>
 
-
+<!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
+<!--[if lt IE 9]> -->
 
 <div id="page-wrapper">
     <section style="padding: 0px 15px;">
         <ol class="breadcrumb"
             style="margin-bottom:0;border-bottom:1px solid #eee;background:none;border-radius:0;padding-left:5px;">
-            <li id="breadcrumb-2"><i class="bk-icon icons-zuoyezhihang"></i> 巡检管理</li>
+            <li id="breadcrumb-2"><i class="bk-icon icons-zuoyezhihang"></i> 常规巡检</li>
             <li id="breadcrumb-3">
-                快速巡检
+                创建
             </li>
         </ol>
     </section>
@@ -41,6 +42,7 @@
             <div class='panel-body'>
                 <!-- 右侧内部表单 start -->
                 <form class="form-horizontal">
+                    <a href="/inspect/routine" class="bk-icon icon-back2">返回</a>
                     <div class="king-block king-block-bordered king-block-themed m5">
                         <div class="king-block-content">
                             <div class="form-group clearfix ">
@@ -72,9 +74,7 @@
                                     <ul class="list-group" id="serverList">
                                     </ul>
                                 </div>
-
                             </div>
-
                             <div class="form-group clearfix">
                                 <label class="col-sm-2 control-label bk-lh30 pt0">巡检来源<span class="red">&nbsp;*</span>：</label>
                                 <div class="col-sm-9">
@@ -105,23 +105,17 @@
                                             <input type="hidden" class="bigdrop"  style="width: 300px; display: none;" title="" value="2" tabindex="-1">
                                         </div>
                                     </div>
-
-
                                 </div>
-
-                                <div class="form-group has-feedback clearfix ">
+                                <div  class="form-group" >
                                     <label class="control-label col-sm-2 pt0" for="introduction">脚本内容：</label>
                                     <div class="col-sm-9" style="border: 0px solid #ddd;" id="editor2_demo1">
-
                                         <textarea id="editor2_demo"></textarea>
                                         <!-- 代码文本 start -->
                                         <pre id="code_box" style="display:none;"></pre>
                                         <!-- 代码文本 end -->
-
                                     </div>
                                 </div>
                             </div>
-
                             <div class="form-group has-feedback clearfix ">
                                 <label class="control-label col-sm-2 pt0" for="introduction">参数：</label>
                                 <div class="col-sm-9">
@@ -137,7 +131,7 @@
                             </div>
                             <div class="form-group clearfix">
                                 <div class="col-sm-9 col-sm-offset-3">
-                                    <button type="button" id="runFastInspect" class="king-btn mr10  king-success" onclick="">执行</button>
+                                    <button type="button" id="saveInspect" class="king-btn mr10  king-success" onclick="">保存</button>
                                     <button type="button" class="king-btn king-default ">取消</button>
                                 </div>
                             </div>
@@ -196,7 +190,7 @@
                 });
                 scriptSelect.select2({
                     data : bkArr,
-                    placeholder: "选择脚本",
+                    placeholder: "选择脚本"
                 });
             }
         });
@@ -219,6 +213,7 @@
                         data :  [{ id: 0, text: result.data.tag }],
                         placeholder: "选择版本"
                     });
+
                 }
             });
             }
@@ -239,10 +234,10 @@
             content: "<table id=\"example\" style=\"width:100%\" role=\"grid\">\n" +
             "    <thead>\n" +
             "    <tr role=\"row\">\n" +
-            "        <th class=\"sorting_disabled\" rowspan=\"1\" colspan=\"1\" >主机名</th>\n" +
-            "        <th class=\"sorting_disabled\" rowspan=\"1\" colspan=\"1\" >主机ip</th>\n" +
-            "        <th class=\"sorting_disabled\" rowspan=\"1\" colspan=\"1\" >操作系统</th>\n" +
-            "        <th class=\"sorting_disabled\" rowspan=\"1\" colspan=\"1\" >系统位数</th>\n" +
+            "        <th class=\"sorting_disabled\" rowspan=\"1\" colspan=\"1\" style=\"width: 217px;\">主机名</th>\n" +
+            "        <th class=\"sorting_disabled\" rowspan=\"1\" colspan=\"1\" style=\"width: 136px;\">主机ip</th>\n" +
+            "        <th class=\"sorting_disabled\" rowspan=\"1\" colspan=\"1\" style=\"width: 119px;\">操作系统</th>\n" +
+            "        <th class=\"sorting_disabled\" rowspan=\"1\" colspan=\"1\" style=\"width: 141px;\">系统位数</th>\n" +
             "    </tr>\n" +
             "    </thead>\n" +
             "</table>\n",
@@ -361,8 +356,8 @@
         $('#example tbody ').on('click', 'tr', function () {
             var index = $(this).index();
             var rowData = $('#example').DataTable().data().toArray()[index];
-            var ip = this.id;
             var bkCloudId =rowData["4"];
+            var ip = this.id;
             if ( !selected.get(ip)) {
                 selected.set(ip,{ip:ip,bkCloudId:bkCloudId});
             } else {
@@ -375,28 +370,37 @@
 
 
 
-    $('#runFastInspect').on('click', function () {
-        $('#runFastInspect').attr("disabled","true");
+    $('#saveInspect').on('click', function () {
+        $('#saveInspect').attr("disabled","true");
         var ipList = [];
         selected.forEach(function (value) {
             ipList.push(value);
         });
-        var jobData = {
-            type:$("input[name=inspectType]:radio").val(),
-            ipList:ipList,
-            param:$("#paramData").val()||"",
-            timeout:$("#timeoutData").val()||"",
-            referenceId:$("#script_list").val()||"",
-            account:$('#accountData').val()||"",
-            name:$('#inspectName').val()||""
+
+
+        var routineInspectData = {
+            type:$("input[name=inspectType]:radio").val()||"", //STEP
+            name:$('#inspectName').val()||"",
+            inspectStep:{
+                stepOrder:0,
+                ipList:JSON.stringify(ipList),
+                param:$("#paramData").val()||"",
+                timeout:$("#timeoutData").val()||"",
+                scriptId:$("#script_list").val()||"",
+                account:$('#accountData').val()||"",
+            }
         };
         $.ajax({
             method: 'POST',
-            url: "/rest/inspect/execute",
-            data: JSON.stringify(jobData),
+            url: "/rest/inspect/routine/save",
+            data: JSON.stringify(routineInspectData),
             success: function(result){
-                $('#runFastInspect').removeAttr("disabled");
-                window.location.href="/inspect/history/list";
+                $('#saveInspect').removeAttr("disabled");
+                if(result.success==true){
+                    window.location.href="/inspect/routine";
+                }else{
+                    alert(result.message);
+                }
             },
             dataType: "json",
             headers: {'Content-Type': 'application/json'}

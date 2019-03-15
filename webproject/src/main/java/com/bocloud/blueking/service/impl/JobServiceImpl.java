@@ -24,9 +24,11 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class JobServiceImpl implements JobService {
+
 
     @Autowired
     InspectRecordService inspectRecordService;
@@ -57,28 +59,35 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public void synInspectRecord(List<InspectRecord> unfinishedRecord) {
-        for(InspectRecord inspectRecord:unfinishedRecord){
-            InspectRecord record = inspectRecordService.get(inspectRecord.getId()).getData();
-            Integer type = inspectRecord.getType();
-            List<InspectRecordJobInstance> instances = record.getInspectRecordJobInstances();
-            switch (JobData.Type.values()[type]){
-                case FAST_TEMPLATE:
-                    //TODO
-                case FAST_SCRIPT:
-                    InspectRecordJobInstance fastScriptInstance = instances.get(0);
-                    Boolean isFinished = isFinished(fastScriptInstance.getId(),record.getBizId(),record.getUserName());
-                    if(isFinished){
-                        inspectRecordService.updateStatus(record.getId(),InspectRecord.Status.SUCCESS.ordinal(),User.SYSTEM_ID);
+    public void synInspectRecord(InspectRecord unfinishedRecord) {
+        InspectRecord record = inspectRecordService.get(unfinishedRecord.getId()).getData();
+        Integer type = unfinishedRecord.getType();
+        List<InspectRecordJobInstance> instances = record.getInspectRecordJobInstances();
+        Integer instanceStatus =0;
+        switch (JobData.Type.values()[type]){
+            case FAST_TEMPLATE:
+                //TODO
+                break;
+            case FAST_SCRIPT:
+                InspectRecordJobInstance fastScriptInstance = instances.get(0);
+                instanceStatus = instanceStatus(fastScriptInstance.getReferenceInstanceId(),record.getBizId(),record.getUserName());
+                break;
+            case TIMING:
+                //TODO
+                break;
+            case ROUTINE:
+                for(InspectRecordJobInstance instance:instances){
+                    instanceStatus = instanceStatus(instance.getReferenceInstanceId(),record.getBizId(),record.getUserName());
+                    if(instanceStatus.equals(InspectRecord.Status.RUNNING.ordinal())){
+                        break;
                     }
-                case TIMING:
-                    //TODO
-                case ROUTINE:
-                    //return executeRoutineInspect(data,userId,bizId,request);
-                default:
-                    break;
-
-            }
+                }
+                break;
+            default:
+                break;
+        }
+        if(!instanceStatus.equals(InspectRecord.Status.RUNNING.ordinal())){
+            inspectRecordService.updateStatus(record.getId(),instanceStatus,User.SYSTEM_ID);
         }
     }
 
@@ -98,8 +107,11 @@ public class JobServiceImpl implements JobService {
         RoutineInspect routineInspect = routineInspectService.get(data.getReferenceId()).getData();
         Integer type  = routineInspect.getType();
         Long instanceId ;
+        String name ;
+        InspectRecordJobInstance instance = new InspectRecordJobInstance();
         if(type.equals(RoutineInspect.Type.STEP.ordinal())){
             InspectStep step = routineInspect.getInspectStep();
+            instance.setInstanceContent(JsonUtil.toJson(step));//***内部数据***
             FastExecuteScriptReq req =jobApi.makeBaseReqByWeb(FastExecuteScriptReq.class,request);
             req.setScriptId(step.getScriptId());
             req.setScriptParam(step.getParam());
@@ -107,20 +119,23 @@ public class JobServiceImpl implements JobService {
             req.setIpDtoList(JSON.parseArray(step.getIpList()).toJavaList(IP.class));
             req.setBkBizId(bizId.intValue());
             req.setAccount(step.getAccount());
-            instanceId =  fastExecuteScript(req);
+            req.setCallBackUrl("http://10.20.50.167:8000/rest/inspect/callback");
+            JobInstanceResult result = fastExecuteScript(req);
+            instanceId =  result.getId();
+            name = result.getName();
         }else if(type.equals(RoutineInspect.Type.TEMPLATE.ordinal())){
             //TODO
             throw  new BusinessException("暂不支持模板类型");
         } else{
             throw  new BusinessException("未知的类型");
         }
-
-        InspectRecordJobInstance instance = new InspectRecordJobInstance();
         instance.setReferenceInstanceId(instanceId);
-        instance.setInstanceContent(JsonUtil.toJson(data));
+        instance.setName(name);
         InspectRecord record = new InspectRecord();
         record.setType(data.getType());
         record.setUserName(userName);
+        record.setName("常规巡检-"+System.currentTimeMillis());
+        record.setBizId(bizId);
         List<InspectRecordJobInstance> list  = new ArrayList<>();
         list.add(instance);
         record.setInspectRecordJobInstances(list);
@@ -129,20 +144,24 @@ public class JobServiceImpl implements JobService {
 
     private RespDto<InspectRecord> executeScript(JobData data,Long userId,String userName ,Long bizId, HttpServletRequest request) throws BusinessException {
         FastExecuteScriptReq req =jobApi.makeBaseReqByWeb(FastExecuteScriptReq.class,request);
-        req.setScriptId(data.getReferenceId());
-        req.setScriptParam(data.getParam());
-        req.setScriptTimeout(data.getTimeout());
-        req.setIpDtoList(data.getIpList());
-        req.setBkBizId(bizId.intValue());
-        req.setAccount(data.getAccount());
 
-        Long instanceId = fastExecuteScript(req);
+        InspectStep step = InspectStep.parse(data);
+
+        req.setScriptId(step.getScriptId());
+        req.setScriptParam(step.getParam());
+        req.setScriptTimeout(step.getTimeout());
+        req.setIpDtoList(JSON.parseArray(step.getIpList()).toJavaList(IP.class));
+        req.setBkBizId(bizId.intValue());
+        req.setAccount(step.getAccount());
+        req.setCallBackUrl("http://10.20.50.167:8000/rest/inspect/callback");
+        Long instanceId = fastExecuteScript(req).getId();
         InspectRecordJobInstance instance = new InspectRecordJobInstance();
         instance.setReferenceInstanceId(instanceId);
-        instance.setInstanceContent(JsonUtil.toJson(data));
+        instance.setInstanceContent(JsonUtil.toJson(step));
         instance.setType(InspectRecordJobInstance.Type.SCRIPT.ordinal());
 
         InspectRecord record = new InspectRecord();
+        record.setName(data.getName());
         record.setType(data.getType());
         record.setBizId(bizId);
         record.setUserName(userName);
@@ -153,13 +172,26 @@ public class JobServiceImpl implements JobService {
     }
 
 
-    private boolean isFinished(Long instanceId,Long bizId,String username){
+    /**
+     *
+     * @param instanceId
+     * @param bizId
+     * @param username
+     * @return 状态  0 进行中 ，1 成功 2 失败
+     */
+    private Integer instanceStatus(Long instanceId,Long bizId,String username){
         GetJobInstanceStatusReq req = jobApi.makeBaseReq(GetJobInstanceStatusReq.class,username);
         req.setId(instanceId);
         req.setBkBizId(bizId.intValue());
         ApiResp<JobInstanceStatus> resp = jobApi.getJobInstanceStatus(req);
         JobInstanceStatus status = resp.getData();
-        return  status.isFinished();
+        if(!status.isFinished()){
+            return  InspectRecord.Status.RUNNING.ordinal();
+        }
+        if(status.getJobInstance().getStatus()==3){
+            return  InspectRecord.Status.SUCCESS.ordinal();
+        }
+        return  InspectRecord.Status.ERROR.ordinal();
     }
 
 
@@ -172,10 +204,10 @@ public class JobServiceImpl implements JobService {
         throw new BusinessException("执行job失败",9999);
     }
 
-    private Long fastExecuteScript(FastExecuteScriptReq req) throws BusinessException {
+    private JobInstanceResult fastExecuteScript(FastExecuteScriptReq req) throws BusinessException {
         ApiResp<JobInstanceResult> resp =  jobApi.fastExecuteScript(req);
         if(resp.getResult()){
-            return resp.getData().getId();
+            return resp.getData();
         }
         throw new BusinessException("执行job失败",9999);
     }

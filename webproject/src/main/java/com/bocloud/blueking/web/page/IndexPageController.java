@@ -54,6 +54,7 @@ public class IndexPageController extends BaseController {
                 userDto.setId(data.getId());
                 userDto.setLang(data.getLang());
                 userDto.setCreateTime(data.getCreateTime());
+                userDto.setBizId(data.getBizId());
             }
             if (userDto.getLang() == null) {
                 userDto.setLang("zh_CN");

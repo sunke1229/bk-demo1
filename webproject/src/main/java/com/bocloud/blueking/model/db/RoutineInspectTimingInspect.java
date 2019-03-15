@@ -22,4 +22,6 @@ public class RoutineInspectTimingInspect extends GenericEntity{
 
     @Column
     private Long timingInspectId;
+
+
 }

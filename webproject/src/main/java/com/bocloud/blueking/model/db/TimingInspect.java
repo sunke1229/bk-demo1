@@ -27,4 +27,6 @@ public class TimingInspect extends GenericEntity {
     @Transient
     private List<Long> routineInspectIds;
 
+
+    //TODO 注意bizId
 }

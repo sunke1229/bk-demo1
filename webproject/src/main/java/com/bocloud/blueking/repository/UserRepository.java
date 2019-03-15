@@ -22,6 +22,8 @@ public interface UserRepository extends JpaRepository<User, Long>,JpaSpecificati
 
     List<User> findUsersByChnameIsLike(String chname);
 
+    List<User> findUserByUsernameIsLike(String userName);
+
     @Query(value = "update  User set bizId = ?2  where id =?1")
      Integer changeBiz(Long userId ,Long bizId);
 }

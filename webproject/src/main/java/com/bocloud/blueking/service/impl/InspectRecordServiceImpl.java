@@ -6,7 +6,7 @@ import com.bocloud.blueking.helper.RespHelper;
 import com.bocloud.blueking.service.InspectRecordService;
 import com.bocloud.blueking.model.db.InspectRecord;
 import com.bocloud.blueking.model.db.InspectRecordJobInstance;
-import com.bocloud.blueking.repository.InspectRecordItemRepository;
+import com.bocloud.blueking.repository.InspectRecordJobInstanceRepository;
 import com.bocloud.blueking.repository.InspectRecordRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Service
@@ -23,13 +27,13 @@ public class InspectRecordServiceImpl implements InspectRecordService {
     @Autowired
     InspectRecordRepository inspectRecordRepository;
     @Autowired
-    InspectRecordItemRepository inspectRecordItemRepository;
+    InspectRecordJobInstanceRepository inspectRecordJobInstanceRepository;
 
     @Override
     public RespDto<InspectRecord> get(Long id) {
         InspectRecord inspectRecord =  inspectRecordRepository.findOne(id);
         if(inspectRecord!=null){
-            List<InspectRecordJobInstance> instances = inspectRecordItemRepository.findByInspectRecordId(inspectRecord.getId());
+            List<InspectRecordJobInstance> instances = inspectRecordJobInstanceRepository.findByInspectRecordId(inspectRecord.getId());
             if(instances!=null){
                 inspectRecord.setInspectRecordJobInstances(instances);
             }
@@ -45,7 +49,7 @@ public class InspectRecordServiceImpl implements InspectRecordService {
 
     @Override
     public RespDto<Page<InspectRecord>> findAll(Specification<InspectRecord> spec, Pageable pageable) {
-        Page<InspectRecord> page =  inspectRecordRepository.findAll(pageable);
+        Page<InspectRecord> page =  inspectRecordRepository.findAll(spec,pageable);
         return RespHelper.ok(page);
     }
 
@@ -57,8 +61,8 @@ public class InspectRecordServiceImpl implements InspectRecordService {
 
     @Override
     public RespDto<InspectRecord> update(InspectRecord inspectRecord, Long userId)  {
-        List<InspectRecordJobInstance> inspectRecordItems = inspectRecordItemRepository.findByInspectRecordId(inspectRecord.getId());
-        inspectRecordItemRepository.deleteByInspectRecordId(inspectRecord.getId(),userId);
+        List<InspectRecordJobInstance> inspectRecordJobInstances = inspectRecordJobInstanceRepository.findByInspectRecordId(inspectRecord.getId());
+        inspectRecordJobInstanceRepository.deleteByInspectRecordId(inspectRecord.getId(),userId);
         InspectRecord beanInDb = inspectRecordRepository.findOne(inspectRecord.getId());
         if(beanInDb==null){
             return  RespHelper.fail(9999,"未查询到要修改的巡检记录");
@@ -74,8 +78,8 @@ public class InspectRecordServiceImpl implements InspectRecordService {
         if(beanInDb==null){
             return  RespHelper.fail(9999,"要删除的巡检记录不存在");
         }
-        List<InspectRecordJobInstance> inspectRecordItems = inspectRecordItemRepository.findByInspectRecordId(id);
-        inspectRecordItemRepository.deleteByInspectRecordId(id,userId);
+        List<InspectRecordJobInstance> inspectRecordJobInstances = inspectRecordJobInstanceRepository.findByInspectRecordId(id);
+        inspectRecordJobInstanceRepository.deleteByInspectRecordId(id,userId);
         inspectRecordRepository.delete(id,userId);
         return RespHelper.ok(id);
     }
@@ -91,6 +95,11 @@ public class InspectRecordServiceImpl implements InspectRecordService {
         return  RespHelper.fail(9999,"修改失败");
     }
 
+    @Override
+    public List<InspectRecord> findAllRunning() {
+        return  inspectRecordRepository.findAllByStatus(0);
+    }
+
 
     private InspectRecord baseSave(InspectRecord inspectRecord, Long userId){
        InspectRecord newInspectRecord=  inspectRecordRepository.save(inspectRecord);
@@ -98,7 +107,7 @@ public class InspectRecordServiceImpl implements InspectRecordService {
        for(InspectRecordJobInstance instance :instances){
            instance.createNow(userId);
            instance.setInspectRecordId(newInspectRecord.getId());
-           inspectRecordItemRepository.save(instance);
+           inspectRecordJobInstanceRepository.save(instance);
        }
        return  newInspectRecord;
     }

@@ -11,8 +11,9 @@ import java.util.List;
 
 public interface InspectStepRepository extends CrudRepository<InspectStep,Long>, JpaRepository<InspectStep, Long>,JpaSpecificationExecutor<InspectStep> {
 
-    List<InspectStep> findByInspectTemplateId(Long id);
+    List<InspectStep> findByIdIn(List<Long> ids);
+
     @Modifying
-    @Query(value = "update  InspectStep set isDeleted = true , modifierId = ?2 ,modifyTime = now() where inspectTemplateId =?1" )
-    Integer deleteByInspectTemplateId(Long inspectTemplateId,Long userId);
+    @Query(value = "update  InspectStep set isDeleted = true , modifierId = ?2 ,modifyTime = now() where id in (?1)" )
+    Integer deleteByIdsIn(String ids , Long userId);
 }

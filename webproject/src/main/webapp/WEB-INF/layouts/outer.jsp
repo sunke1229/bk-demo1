@@ -25,6 +25,12 @@
     <script src="//magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <!-- 包括所有kendoui的js插件或者可以根据需要使用的js插件调用　-->
     <script src="//magicbox.bk.tencent.com/static_api/v3/assets/kendoui-2015.2.624/js/kendo.all.min.js"></script>
+
+    <!--蓝鲸平台APP 公用的样式文件 -->
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/bk-icon-2.0/iconfont.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/base/common.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/components/button.css" rel="stylesheet">
+
     <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
     <!--[if lt IE 9]>
     <script src="//magicbox.bk.tencent.com/static_api/v3/assets/js/html5shiv.min.js"></script>
@@ -148,7 +154,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="javascript:;"><i class="fa fa-fw fa-power-off"></i> 退出</a>
+                            <a href="${sessionScope.SITE_URL}rest/user/logout"><i class="fa fa-fw fa-power-off"></i> 退出</a>
                         </li>
                     </ul>
                 </li>
@@ -157,16 +163,16 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li id ="menuFirstPage" >
-                        <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> 首页</a>
+                        <a href="/"><i class="fa fa-fw fa-dashboard"></i> 首页</a>
                     </li>
                     <li id="menuInspectManagement">
                         <a href="javascript:;" data-toggle="collapse" data-target="#subMenuInspectManagement"><i class="fa fa-fw fa-arrows-v"></i> 巡检管理 <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="subMenuInspectManagement" class="collapse">
                             <li>
-                                <a href="fast_exec.html"><i class="fa fa-fw fa-table"></i> 快速巡检</a>
+                                <a href="/inspect/fast"><i class="fa fa-fw fa-table"></i> 快速巡检</a>
                             </li>
                             <li>
-                                <a href="inspection_list.html"> 常规巡检</a>
+                                <a href="/inspect/routine"> 常规巡检</a>
                             </li>
                             <li>
                                 <a href="inspection_timing.html"> 定时巡检</a>
@@ -175,7 +181,7 @@
                     </li>
 
                     <li id ="menuInspectHistory">
-                        <a href="inspection_history.html"><i class="fa fa-fw fa-edit"></i> 历史记录</a>
+                        <a href="/inspect/history/list"><i class="fa fa-fw fa-edit"></i> 历史记录</a>
                     </li>
                     <li id ="menuMessage">
                         <a href="exception_building.html"><i class="fa fa-fw fa-wrench"></i> 通知功能</a>

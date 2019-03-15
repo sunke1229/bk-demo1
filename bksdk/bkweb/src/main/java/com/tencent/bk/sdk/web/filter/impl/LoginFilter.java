@@ -54,6 +54,10 @@ public class LoginFilter extends BkAbstractFilter {
         String requestUri = request.getRequestURI();
 
         try {
+            if(requestUri.equals(bkCoreProperties.getCallbackPath())){
+                filterChain.doFilter(servletRequest, servletResponse);
+                return;
+            }
             //token校验
             String bkToken = CookieUtil.getCookieValue(request, BkConsts.C_BK_TOKEN);
             if (StringUtils.isBlank(bkToken)) {
