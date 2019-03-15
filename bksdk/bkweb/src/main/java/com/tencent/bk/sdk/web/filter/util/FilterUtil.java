@@ -77,7 +77,7 @@ public class FilterUtil {
             }
             if (!StringUtils.equals(token, reqToken)) {
                 // 可能的csrf攻击，拒绝请求
-                LOG.error("token not equal| reqToken={}| sesToken={}| sid={}", reqToken, token, httpSession.getId());
+                LOG.warn("token not equal| reqToken={}| sesToken={}| sid={}", reqToken, token, httpSession.getId());
                 return false;
             }
         }
