@@ -64,4 +64,7 @@ public class BkCoreProperties {
     @Value("${callback.path}")
     private String callbackPath;
 
+    @Value("${callback.fullPath}")
+    private String fullCallbackPath;
+
 }

@@ -25,5 +25,5 @@ public interface UserService extends BaseCommonService<User, Long> {
 
     RespDto<List<User>> findByChname(String chname);
 
-    RespDto<Long> changeBiz(Long userId , Long bizId);
+    RespDto<Long> changeBiz(Long userId , Long bizId,String bizName);
 }

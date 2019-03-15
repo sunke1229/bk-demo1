@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Enumeration;
 
 /**
  * 过滤器/servlet等的工具类
@@ -61,11 +62,19 @@ public class FilterUtil {
     public static boolean checkCsrfKey(HttpServletRequest httpRequest, HttpSession httpSession) {
 
         String token = (String) httpSession.getAttribute(BkConsts.X_CSRF_KEY);
+        Enumeration<String> enumeration =  httpSession.getAttributeNames();
+        while(enumeration.hasMoreElements()){
+            System.out.println(enumeration.nextElement());
+        }
         if (StringUtils.isBlank(token)) {
             LOG.warn("session token is null| sid={}", httpSession.getId());
             return false;
         } else {
             String reqToken = httpRequest.getHeader(BkConsts.X_CSRF_KEY); // 取头tk:xyz
+            Enumeration<String> headerNames =  httpRequest.getHeaderNames();
+            while(headerNames.hasMoreElements()){
+                System.out.println(headerNames.nextElement());
+            }
             if (!StringUtils.equals(token, reqToken)) {
                 // 可能的csrf攻击，拒绝请求
                 LOG.warn("token not equal| reqToken={}| sesToken={}| sid={}", reqToken, token, httpSession.getId());

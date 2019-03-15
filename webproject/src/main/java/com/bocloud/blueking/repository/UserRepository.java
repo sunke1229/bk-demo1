@@ -7,6 +7,7 @@ package com.bocloud.blueking.repository;
 import com.bocloud.blueking.model.db.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -23,7 +24,7 @@ public interface UserRepository extends JpaRepository<User, Long>,JpaSpecificati
     List<User> findUsersByChnameIsLike(String chname);
 
     List<User> findUserByUsernameIsLike(String userName);
-
-    @Query(value = "update  User set bizId = ?2  where id =?1")
-     Integer changeBiz(Long userId ,Long bizId);
+    @Modifying
+    @Query(value = "update  User set bizId = ?2 ,bizName = ?3  where id =?1")
+     Integer changeBiz(Long userId ,Long bizId,String bizName);
 }

@@ -14,11 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
@@ -27,13 +23,13 @@ public class InspectTemplateController extends BaseController {
     @Autowired
     InspectTemplateService inspectTemplateService;
 
-    @RequestMapping("/inspect/template/{id}")
+    @RequestMapping(value="/inspect/template/{id}",method ={RequestMethod.GET})
     @ResponseBody
     public String get(@PathVariable("id") Long id){
         return JsonUtil.toJson(inspectTemplateService.get(id));
     }
 
-    @RequestMapping("/inspect/template/list")
+    @RequestMapping(value="/inspect/template/list",method ={RequestMethod.GET})
     @ResponseBody
     public String getAll(Integer page,Integer size,String search)  {
         Pageable pageable ;
@@ -52,7 +48,7 @@ public class InspectTemplateController extends BaseController {
         return JsonUtil.toJson(inspectTemplateService.findAll(pageable));
     }
 
-    @RequestMapping("/inspect/template/save")
+    @RequestMapping(value="/inspect/template/save",method ={RequestMethod.POST})
     @ResponseBody
     public String save(@RequestBody InspectTemplate inspectTemplate){
         Long userId = getLocalUserId();
@@ -63,7 +59,7 @@ public class InspectTemplateController extends BaseController {
         return JsonUtil.toJson(a);
     }
 
-    @RequestMapping("/inspect/template/update")
+    @RequestMapping(value="/inspect/template/update",method ={RequestMethod.POST})
     @ResponseBody
     public String update(@RequestBody InspectTemplate inspectTemplate){
         Long userId = getLocalUserId();
@@ -77,7 +73,7 @@ public class InspectTemplateController extends BaseController {
     }
 
 
-    @RequestMapping("/inspect/template/{id}/delete")
+    @RequestMapping(value="/inspect/template/{id}/delete",method ={RequestMethod.DELETE})
     @ResponseBody
     public String delete(@PathVariable("id") Long id){
         Long userId = getLocalUserId();

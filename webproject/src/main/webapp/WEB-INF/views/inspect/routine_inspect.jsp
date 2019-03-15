@@ -257,7 +257,16 @@
                     data: JSON.stringify(jobData),
                     success: function(result){
                         if(result.success==true){
-                           // window.location.href="/inspect/history/list";
+                            dialog({
+                                width: 260,
+                                //title: '提示',
+                                content: '已执行',
+                                okValue: '确定',
+                                ok:function () {
+
+                                }
+                            }).show();
+                           //window.location.href="/inspect/history/list";
                         }else{
                             alert(result.message);
                         }
@@ -279,7 +288,7 @@
     }
     function deleteInspect(id){
         $.ajax({
-            type: "GET",
+            type: "DELETE",
             url: "/rest/inspect/routine/"+id+"/delete",
             cache: false, //禁用缓存
             dataType: "json",

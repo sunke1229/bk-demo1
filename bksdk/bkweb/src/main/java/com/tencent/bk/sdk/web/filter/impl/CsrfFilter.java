@@ -74,7 +74,7 @@ public class CsrfFilter extends BkAbstractFilter {
         }
     }
 
-    private List<String> methodPass = Lists.newArrayList("GET","POST", "HEAD", "OPTIONS", "TRACE");
+    private List<String> methodPass = Lists.newArrayList("GET", "HEAD", "OPTIONS", "TRACE");
 
     private boolean method(String method) {
         return !methodPass.contains(method);

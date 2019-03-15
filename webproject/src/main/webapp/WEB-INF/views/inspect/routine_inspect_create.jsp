@@ -56,7 +56,7 @@
                                 <div class="col-sm-9">
                                     <select id="accountData" value="root"  class="form-control bk-valign-top">
                                         <option value="root" >root</option>
-                                        <option value="system">system</option>
+                                        <%--<option value="system">system</option>--%>
                                     </select>
                                 </div>
                             </div>
@@ -107,7 +107,7 @@
                                     </div>
                                 </div>
                                 <div  class="form-group" >
-                                    <label class="control-label col-sm-2 pt0" for="introduction">脚本内容：</label>
+                                    <label class="control-label col-sm-2 pt0" >脚本内容：</label>
                                     <div class="col-sm-9" style="border: 0px solid #ddd;" id="editor2_demo1">
                                         <textarea id="editor2_demo"></textarea>
                                         <!-- 代码文本 start -->
@@ -117,7 +117,7 @@
                                 </div>
                             </div>
                             <div class="form-group has-feedback clearfix ">
-                                <label class="control-label col-sm-2 pt0" for="introduction">参数：</label>
+                                <label class="control-label col-sm-2 pt0" >参数：</label>
                                 <div class="col-sm-9">
                                     <input id="paramData" type="text" class="form-control bk-valign-top"
                                            placeholder="请输入参数"> </div>

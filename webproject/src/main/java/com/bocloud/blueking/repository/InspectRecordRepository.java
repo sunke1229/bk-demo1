@@ -1,6 +1,7 @@
 package com.bocloud.blueking.repository;
 
 import com.bocloud.blueking.model.db.InspectRecord;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -19,4 +20,5 @@ public interface InspectRecordRepository extends CrudRepository<InspectRecord,Lo
     Integer delete(Long id , Long modifierId);
 
     List<InspectRecord> findAllByStatus(Integer status);
+
 }

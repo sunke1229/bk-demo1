@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -94,8 +95,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RespDto<Long> changeBiz(Long userId, Long bizId) {
-        if(userRepository.changeBiz(userId,bizId)>0){
+    @Transactional
+    public RespDto<Long> changeBiz(Long userId, Long bizId,String bizName) {
+        if(userRepository.changeBiz(userId,bizId,bizName)>0){
             return  RespHelper.ok();
         }
         return  RespHelper.fail(9999,"修改业务失败");

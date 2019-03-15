@@ -55,6 +55,7 @@ public class IndexPageController extends BaseController {
                 userDto.setLang(data.getLang());
                 userDto.setCreateTime(data.getCreateTime());
                 userDto.setBizId(data.getBizId());
+                userDto.setBizName(data.getBizName());
             }
             if (userDto.getLang() == null) {
                 userDto.setLang("zh_CN");
@@ -65,7 +66,9 @@ public class IndexPageController extends BaseController {
                 CommonSearchDataList list = resp.getData();
                 if(list!=null&&list.getCount()>0){
                     Integer bizId = (Integer)list.getInfo().get(0).get("bk_biz_id");
+                    String bizName = (String)list.getInfo().get(0).get("bk_biz_name");
                     userDto.setBizId(bizId.longValue());
+                    userDto.setBizName(bizName);
                 }
             }
             userDto.setLastLoginTime(new Date());
@@ -77,6 +80,8 @@ public class IndexPageController extends BaseController {
             }
             lang = saveRsp.getData().getLang();
             session.setAttribute(BkConsts.SYS_LANGUAGE, lang);
+            session.setAttribute("userName",userDto.getChname());
+            session.setAttribute("businessName",userDto.getBizName());
         }
         view.setViewName("/index"); //首页
         return view;

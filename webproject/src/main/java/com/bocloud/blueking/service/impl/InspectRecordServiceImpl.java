@@ -3,6 +3,8 @@ package com.bocloud.blueking.service.impl;
 import com.bocloud.blueking.common.util.IgnorePropertiesUtil;
 import com.bocloud.blueking.dto.RespDto;
 import com.bocloud.blueking.helper.RespHelper;
+import com.bocloud.blueking.model.bussiness.JobData;
+import com.bocloud.blueking.model.db.User;
 import com.bocloud.blueking.service.InspectRecordService;
 import com.bocloud.blueking.model.db.InspectRecord;
 import com.bocloud.blueking.model.db.InspectRecordJobInstance;
@@ -98,6 +100,36 @@ public class InspectRecordServiceImpl implements InspectRecordService {
     @Override
     public List<InspectRecord> findAllRunning() {
         return  inspectRecordRepository.findAllByStatus(0);
+    }
+
+    @Override
+    @Transactional
+    public void synInstance(Long instanceId, Integer status) {
+        Integer recordStatus;
+        if(status==3){
+            recordStatus = 1;
+        }else if(status<3){
+            recordStatus = 0;
+        }else{
+            recordStatus = 2;
+        }
+
+        InspectRecordJobInstance instance =  inspectRecordJobInstanceRepository.findByReferenceInstanceId(instanceId);
+        InspectRecord record = inspectRecordRepository.findOne(instance.getInspectRecordId());
+        Integer recordType = record.getType();
+        //FAST_SCRIPT,FAST_TEMPLATE,ROUTINE ,TIMING
+        if(!recordType.equals(JobData.Type.TIMING.ordinal())){
+            inspectRecordRepository.updateStatus(record.getId(),recordStatus, User.SYSTEM_ID);
+        }else{
+            //TODO  定时巡检
+            //一个或者多个常规
+        }
+
+    }
+
+    @Override
+    public Long count(Specification<InspectRecord> spec) {
+        return inspectRecordRepository.count(spec);
     }
 
 

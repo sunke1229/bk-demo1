@@ -18,10 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.*;
 import java.text.ParseException;
@@ -41,13 +38,13 @@ public class RoutineInspectController extends BaseController {
     @Autowired
     UserRepository userRepository;
 
-    @RequestMapping("/inspect/routine/{id}")
+    @RequestMapping(value="/inspect/routine/{id}",method ={RequestMethod.GET})
     @ResponseBody
     public String get(@PathVariable("id") Long id){
         return JsonUtil.toJson(routineInspectService.get(id));
     }
 
-    @RequestMapping("/inspect/routine/list")
+    @RequestMapping(value="/inspect/routine/list",method ={RequestMethod.GET})
     @ResponseBody
     public String getAll(String name,String creator , String modifier , String createTime ,String modityTime,Integer start ,Integer length)  {
 
@@ -109,13 +106,13 @@ public class RoutineInspectController extends BaseController {
             }
             Predicate[] pre = new Predicate[predicate.size()];
             criteriaQuery.where(predicate.toArray(pre));
-            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("modifyTime")));
+            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("createTime")));
             return null;
         };
         return JsonUtil.toJson(routineInspectService.findAll(spec,pageable));
     }
 
-    @RequestMapping("/inspect/routine/save")
+    @RequestMapping(value="/inspect/routine/save",method ={RequestMethod.POST})
     @ResponseBody
     public String save(@RequestBody RoutineInspect routineInspect){
         User user = getLocalUser();
@@ -127,7 +124,7 @@ public class RoutineInspectController extends BaseController {
         return JsonUtil.toJson(a);
     }
 
-    @RequestMapping("/inspect/routine/update")
+    @RequestMapping(value="/inspect/routine/update",method ={RequestMethod.POST})
     @ResponseBody
     public String update(@RequestBody RoutineInspect routineInspect){
         Long userId = getLocalUserId();
@@ -141,7 +138,7 @@ public class RoutineInspectController extends BaseController {
     }
 
 
-    @RequestMapping("/inspect/routine/{id}/delete")
+    @RequestMapping(value="/inspect/routine/{id}/delete",method ={RequestMethod.DELETE})
     @ResponseBody
     public String delete(@PathVariable("id") Long id){
         Long userId = getLocalUserId();

@@ -186,7 +186,6 @@
                     var selected = new Map();
                     if(ipList){
                         ipList.forEach(function (item) {
-                            console.log(item);
                             selected.set(item.ip,item);
                         });
                     }

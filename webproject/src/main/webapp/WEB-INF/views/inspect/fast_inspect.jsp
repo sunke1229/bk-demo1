@@ -54,7 +54,7 @@
                                 <div class="col-sm-9">
                                     <select id="accountData" value="root"  class="form-control bk-valign-top">
                                         <option value="root" >root</option>
-                                        <option value="system">system</option>
+                                        <%--<option value="system">system</option>--%>
                                     </select>
                                 </div>
                             </div>

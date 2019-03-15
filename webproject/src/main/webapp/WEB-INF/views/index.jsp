@@ -20,14 +20,11 @@
                 <div class="king-widget2">
                     <div class="king-widget-content p20 bg-info">
                         <div class="king-counter king-counter-lg">
-                            <div class="king-counter-label text-uppercase f16">we have</div>
+                            <div class="king-counter-label text-uppercase f16">当前用户今日巡检执行</div>
                             <div class="king-counter-number-group">
-                                <span class="king-counter-number white">260</span>
-                                <span class="king-counter-icon ml10 white">
-                                            <i class="fa fa-image"></i>
-                                        </span>
+                                <span class="king-counter-number white" id="youTodayTime"></span>
                             </div>
-                            <div class="king-counter-label text-uppercase f16">followers</div>
+                            <div class="king-counter-label text-uppercase f16">次</div>
                         </div>
                     </div>
                 </div>
@@ -36,14 +33,11 @@
                 <div class="king-widget2">
                     <div class="king-widget-content p20 bg-info">
                         <div class="king-counter king-counter-lg">
-                            <div class="king-counter-label text-uppercase f16">we have</div>
+                            <div class="king-counter-label text-uppercase f16">今日巡检执行</div>
                             <div class="king-counter-number-group">
-                                <span class="king-counter-number white">300</span>
-                                <span class="king-counter-icon ml10 white">
-                                            <i class="fa fa-music"></i>
-                                        </span>
+                                <span class="king-counter-number white"id="allTodayTime"></span>
                             </div>
-                            <div class="king-counter-label text-uppercase f16">followers</div>
+                            <div class="king-counter-label text-uppercase f16">次</div>
                         </div>
                     </div>
                 </div>
@@ -52,14 +46,11 @@
                 <div class="king-widget2">
                     <div class="king-widget-content p20 bg-info">
                         <div class="king-counter king-counter-lg">
-                            <div class="king-counter-label text-uppercase f16">we have</div>
+                            <div class="king-counter-label text-uppercase f16">当前用户今日常规巡检执行</div>
                             <div class="king-counter-number-group">
-                                <span class="king-counter-number white">110</span>
-                                <span class="king-counter-icon ml10 white">
-                                        <i class="fa fa-envelope"></i>
-                                    </span>
+                                <span class="king-counter-number white" id="routineYouTodayTime"></span>
                             </div>
-                            <div class="king-counter-label text-uppercase f16">followers</div>
+                            <div class="king-counter-label text-uppercase f16">次</div>
                         </div>
                     </div>
                 </div>
@@ -68,12 +59,11 @@
                 <div class="king-widget2">
                     <div class="king-widget-content p20 bg-info">
                         <div class="king-counter king-counter-lg">
-                            <div class="king-counter-label text-uppercase f16">we have</div>
+                            <div class="king-counter-label text-uppercase f16">今日常规巡检执行</div>
                             <div class="king-counter-number-group">
-                                <span class="king-counter-number white">50</span>
-                                <span class="king-counter-number-related white">+</span>
+                                <span class="king-counter-number white" id="routineAllTodayTime"></span>
                             </div>
-                            <div class="king-counter-label text-uppercase f16">followers</div>
+                            <div class="king-counter-label text-uppercase f16">次</div>
                         </div>
                     </div>
                 </div>
@@ -81,7 +71,7 @@
         </div>
         <!-- /.row -->
 
-        <div class="row charts">
+        <%--<div class="row charts">
             <div class="col-md-6">
                 <div class="king-block king-block-bordered mb30">
                     <div class="king-block-header">
@@ -123,10 +113,61 @@
                 </div>
             </div>
 
-        </div>
+        </div>--%>
         <!-- /.row -->
 
     </div>
     <!-- /.container-fluid -->
 
 </div>
+<script type="text/javascript">
+//limitDay,Integer type, Integer status,Integer userId
+    $.ajax({
+        type: "GET",
+        url: "/rest/inspect/record/count?limitDay=0&type=2",
+        cache: false, //禁用缓存
+        dataType: "json",
+        success: function (result) {
+            if(result.success==true){
+                console.log(result);
+                $('#routineAllTodayTime').html(result.data)
+            }
+        }
+    });
+    $.ajax({
+        type: "GET",
+        url: "/rest/inspect/record/count?limitDay=0&type=2&userId=-2",
+        cache: false, //禁用缓存
+        dataType: "json",
+        success: function (result) {
+            if(result.success==true){
+                console.log(result);
+                $('#routineYouTodayTime').html(result.data)
+            }
+        }
+    });
+    $.ajax({
+        type: "GET",
+        url: "/rest/inspect/record/count?limitDay=0",
+        cache: false, //禁用缓存
+        dataType: "json",
+        success: function (result) {
+            if(result.success==true){
+                console.log(result);
+                $('#allTodayTime').html(result.data)
+            }
+        }
+    });
+    $.ajax({
+        type: "GET",
+        url: "/rest/inspect/record/count?limitDay=0&userId=-2",
+        cache: false, //禁用缓存
+        dataType: "json",
+        success: function (result) {
+            if(result.success==true){
+                console.log(result);
+                $('#youTodayTime').html(result.data)
+            }
+        }
+    });
+</script>

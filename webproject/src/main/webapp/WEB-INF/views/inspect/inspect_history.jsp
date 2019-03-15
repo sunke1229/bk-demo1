@@ -52,8 +52,10 @@
                                     <div class="input-group-addon">巡检类型</div>
                                     <select id="inspectType"  class="form-control" >
                                         <option value="-1">所有类型</option>
-                                        <option value="1">快速巡检-脚本</option>
+                                        <option value="0">快速巡检-脚本</option>
+                                        <%--<option value="1">快速巡检-模板</option>--%>
                                         <option value="2">常规巡检</option>
+                                      <%--  <option value="3">定时巡检</option>--%>
                                     </select>
                                 </div>
                             </div>
@@ -233,22 +235,4 @@
         });
     }
     loadTable();
-    function runInspect(id){
-        console.log(id+"run");
-    }
-    function deleteInspect(id){
-        $.ajax({
-            type: "GET",
-            url: "/rest/inspect/routine/"+id+"/delete",
-            cache: false, //禁用缓存
-            dataType: "json",
-            success: function (result) {
-                if(result.success==true){
-                    console.log(result);
-                    $('#example').DataTable().ajax.reload();
-                }
-            }
-        });
-        console.log(id+"delete");
-    }
 </script>

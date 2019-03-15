@@ -31,6 +31,7 @@ public class User implements Serializable {
     private String phone;
     private String email;
     private Long bizId;
+    private String bizName;
 
     public static   Long  SYSTEM_ID  = 0L ;
 

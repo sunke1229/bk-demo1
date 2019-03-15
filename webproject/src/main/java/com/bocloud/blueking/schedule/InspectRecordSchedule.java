@@ -20,20 +20,8 @@ public class InspectRecordSchedule {
     InspectRecordService inspectRecordService;
     @Autowired
     JobService jobService;
-    //@Scheduled(fixedDelay=ONE_Minute*5)
+    @Scheduled(fixedDelay=ONE_Minute*5)
     public void checkInspectRecordStatus(){
-        System.out.println("----------");
-        System.out.println("----------");
-        System.out.println("----------");
-        System.out.println("----------");
-        System.out.println("----------");
-        System.out.println("----------");
-        System.out.println("----------");
-        System.out.println("----------");
-        System.out.println("----------");
-        System.out.println("----------");
-        System.out.println("----------");
-        System.out.println("----------");
         List<InspectRecord> list =inspectRecordService.findAllRunning();
         for(InspectRecord inspectRecord:list){
             Long span = (System.currentTimeMillis() - inspectRecord.getCreateTime().getTime())/ONE_Minute*5;

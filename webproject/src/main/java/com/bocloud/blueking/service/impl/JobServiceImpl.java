@@ -17,6 +17,7 @@ import com.tencent.bk.api.job.req.ExecuteJobReq;
 import com.tencent.bk.api.job.req.FastExecuteScriptReq;
 import com.tencent.bk.api.job.req.GetJobInstanceStatusReq;
 import com.tencent.bk.api.protocol.ApiResp;
+import com.tencent.bk.core.init.BkCoreProperties;
 import com.tencent.bk.utils.json.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,9 @@ public class JobServiceImpl implements JobService {
 
     @Autowired
     RoutineInspectService routineInspectService;
+
+    @Autowired
+    BkCoreProperties bkCoreProperties;
 
     @Override
     public RespDto<InspectRecord> execute(JobData data, Long userId ,String userName, Long bizId, HttpServletRequest request) throws BusinessException {
@@ -119,7 +123,7 @@ public class JobServiceImpl implements JobService {
             req.setIpDtoList(JSON.parseArray(step.getIpList()).toJavaList(IP.class));
             req.setBkBizId(bizId.intValue());
             req.setAccount(step.getAccount());
-            req.setCallBackUrl("http://10.20.50.167:8000/rest/inspect/callback");
+            req.setCallBackUrl(bkCoreProperties.getFullCallbackPath());
             JobInstanceResult result = fastExecuteScript(req);
             instanceId =  result.getId();
             name = result.getName();
@@ -153,7 +157,7 @@ public class JobServiceImpl implements JobService {
         req.setIpDtoList(JSON.parseArray(step.getIpList()).toJavaList(IP.class));
         req.setBkBizId(bizId.intValue());
         req.setAccount(step.getAccount());
-        req.setCallBackUrl("http://10.20.50.167:8000/rest/inspect/callback");
+        req.setCallBackUrl(bkCoreProperties.getFullCallbackPath());
         Long instanceId = fastExecuteScript(req).getId();
         InspectRecordJobInstance instance = new InspectRecordJobInstance();
         instance.setReferenceInstanceId(instanceId);

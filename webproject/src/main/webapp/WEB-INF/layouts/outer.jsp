@@ -8,9 +8,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Inspection Management System</title>
+
+    <script type="text/javascript">
+        var app_id = "${sessionScope.APP_ID}";
+        var site_url = "${sessionScope.SITE_URL}";	  // app的url前缀,在ajax调用的时候，应该加上该前缀
+        var static_url = "${sessionScope.STATIC_URL}"; // 静态资源前缀，在js中引用资源时要加上这个前缀
+    </script>
     <!-- Bootstrap css -->
     <link href="//magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <link href="//magicbox.bk.tencent.com/static_api/v3/assets/fontawesome/css/font-awesome.css" rel="stylesheet">
+
 
     <!-- 当前项目样式文件 -->
     <link href="/static/css/sb-admin.css" rel="stylesheet">
@@ -26,6 +33,8 @@
     <!-- 包括所有kendoui的js插件或者可以根据需要使用的js插件调用　-->
     <script src="//magicbox.bk.tencent.com/static_api/v3/assets/kendoui-2015.2.624/js/kendo.all.min.js"></script>
 
+    <!--配置js  勿删-->
+    <script src="${sessionScope.STATIC_URL}js/settings.js?v=${sessionScope.STATIC_VERSION}" type="text/javascript"></script>
     <!--蓝鲸平台APP 公用的样式文件 -->
     <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/bk-icon-2.0/iconfont.css" rel="stylesheet">
     <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/base/common.css" rel="stylesheet">
@@ -41,7 +50,6 @@
 </head>
 
 <body>
-
     <div id="wrapper">
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -60,7 +68,7 @@
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
-                <li class="dropdown">
+                <%--<li class="dropdown">
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b class="caret"></b></a>
                     <ul class="dropdown-menu message-dropdown">
                         <li class="message-preview">
@@ -112,8 +120,8 @@
                             <a href="javascript:;">查看所有消息</a>
                         </li>
                     </ul>
-                </li>
-                <li class="dropdown">
+                </li>--%>
+                <%--<li class="dropdown">
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
                     <ul class="dropdown-menu alert-dropdown">
                         <li>
@@ -139,11 +147,17 @@
                             <a href="javascript:;" class='text-center'>查看所有提醒</a>
                         </li>
                     </ul>
-                </li>
+                </li>--%>
+                    <li class="dropdown" onclick="loadBusiness()">
+                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"  ><i class="fa fa-bell"></i>&nbsp;${sessionScope.businessName}<b class="caret"></b></a>
+                        <ul class="dropdown-menu alert-dropdown" id="business"  >
+
+                        </ul>
+                    </li>
                 <li class="dropdown">
-                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> admin <b class="caret"></b></a>
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>${sessionScope.userName}<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li>
+                        <%--<li>
                             <a href="javascript:;"><i class="fa fa-fw fa-user"></i> 用户</a>
                         </li>
                         <li>
@@ -151,8 +165,8 @@
                         </li>
                         <li>
                             <a href="javascript:;"><i class="fa fa-fw fa-gear"></i> 设置</a>
-                        </li>
-                        <li class="divider"></li>
+                        </li>--%>
+                        <%--<li class="divider"></li>--%>
                         <li>
                             <a href="${sessionScope.SITE_URL}rest/user/logout"><i class="fa fa-fw fa-power-off"></i> 退出</a>
                         </li>
@@ -169,21 +183,21 @@
                         <a href="javascript:;" data-toggle="collapse" data-target="#subMenuInspectManagement"><i class="fa fa-fw fa-arrows-v"></i> 巡检管理 <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="subMenuInspectManagement" class="collapse">
                             <li>
-                                <a href="/inspect/fast"><i class="fa fa-fw fa-table"></i> 快速巡检</a>
+                                <a href="/inspect/fast"><%--<i class="fa fa-fw fa-table"></i>--%> 快速巡检</a>
                             </li>
                             <li>
                                 <a href="/inspect/routine"> 常规巡检</a>
                             </li>
-                            <li>
+                            <%--<li>
                                 <a href="inspection_timing.html"> 定时巡检</a>
-                            </li>
+                            </li>--%>
                         </ul>
                     </li>
 
                     <li id ="menuInspectHistory">
                         <a href="/inspect/history/list"><i class="fa fa-fw fa-edit"></i> 历史记录</a>
                     </li>
-                    <li id ="menuMessage">
+                    <%--<li id ="menuMessage">
                         <a href="exception_building.html"><i class="fa fa-fw fa-wrench"></i> 通知功能</a>
                     </li>
                     <li>
@@ -199,7 +213,7 @@
                                 <a href="exception_building.html"> 通知模板 </a>
                             </li>
                         </ul>
-                    </li>
+                    </li>--%>
                 </ul>
             </div>
             <!-- 左侧 end -->
@@ -222,5 +236,51 @@
     var subPageName = $('#subPageName').html();
     var menu = $('#'+subPageName)
     menu.find("ul").eq(0).collapse('show');
+    console.log("${sessionScope}");
+    function loadBusiness() {
+        $("#business").empty();
+        $("#business").append("<li><a href=\"javascript:;\"><span class=\"label label-default\">加载中</span></a> </li>");
+        $.ajax({
+            type: "GET",
+            url: "/rest/system/biz/list",
+            cache: false, //禁用缓存
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if(result.success==true){
+                    $("#business").empty();
+                    var businessList = result.data.info;
+                    businessList.forEach(function (item) {
+                        var businessItemName = item.bk_biz_name;
+                        var businessItem = "<li  onclick='changeBusiness("+item.bk_biz_id+")'><a href=\"javascript:;\"><span class=\"label label-default\">"+businessItemName+"</span></a> </li>";
+                        $("#business").append(businessItem);
+                    });
+
+                }
+            }
+        });
+
+
+
+    }
+
+
+    function changeBusiness(id) {
+        $.ajax({
+            type: "POST",
+            url: "/rest/system/changeBiz?bizId="+id,
+            cache: false, //禁用缓存
+            dataType: "json",
+            success: function (result) {
+                if(result.success==true){
+                    window.location.href="/";
+                }else{
+                    alert(result.message);
+                }
+            }
+        });
+    }
+
+
 </script>
 </html>

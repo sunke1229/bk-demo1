@@ -11,10 +11,7 @@ import com.tencent.bk.utils.json.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
@@ -22,13 +19,13 @@ public class TimingInspectController extends BaseController {
 
     @Autowired
     TimingInspectService timingInspectService;
-    @RequestMapping("/inspect/timing/{id}")
+    @RequestMapping(value="/inspect/timing/{id}",method ={RequestMethod.GET})
     @ResponseBody
     public String get(@PathVariable("id") Long id){
         return JsonUtil.toJson(timingInspectService.get(id));
     }
 
-    @RequestMapping("/inspect/timing/list")
+    @RequestMapping(value="/inspect/timing/list",method ={RequestMethod.GET})
     @ResponseBody
     public String getAll(Integer page,Integer size)  {
         Pageable pageable ;
@@ -40,7 +37,7 @@ public class TimingInspectController extends BaseController {
         return JsonUtil.toJson(timingInspectService.findAll(pageable));
     }
 
-    @RequestMapping("/inspect/timing/save")
+    @RequestMapping(value="/inspect/timing/save",method ={RequestMethod.POST})
     @ResponseBody
     public String save(@RequestBody TimingInspect timingInspect){
         Long userId = getLocalUserId();
@@ -51,7 +48,7 @@ public class TimingInspectController extends BaseController {
         return JsonUtil.toJson(a);
     }
 
-    @RequestMapping("/inspect/timing/update")
+    @RequestMapping(value="/inspect/timing/update",method ={RequestMethod.POST})
     @ResponseBody
     public String update(@RequestBody TimingInspect timingInspect){
         Long userId = getLocalUserId();
@@ -65,7 +62,7 @@ public class TimingInspectController extends BaseController {
     }
 
 
-    @RequestMapping("/inspect/timing/{id}/delete")
+    @RequestMapping(value="/inspect/timing/{id}/delete",method ={RequestMethod.DELETE})
     @ResponseBody
     public String delete(@PathVariable("id") Long id){
         Long userId = getLocalUserId();

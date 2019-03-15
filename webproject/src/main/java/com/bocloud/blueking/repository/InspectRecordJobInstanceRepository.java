@@ -16,4 +16,6 @@ public interface InspectRecordJobInstanceRepository extends CrudRepository<Inspe
     @Modifying
     @Query(value = "update  InspectRecordJobInstance set isDeleted = true , modifierId = ?2 ,modifyTime = now() where inspectRecordId =?1" )
     Integer deleteByInspectRecordId(Long inspectRecordId , Long modifierId);
+
+    InspectRecordJobInstance findByReferenceInstanceId(Long referenceInstanceId);
 }
