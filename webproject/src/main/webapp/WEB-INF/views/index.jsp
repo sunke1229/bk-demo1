@@ -121,7 +121,6 @@
 
 </div>
 <script type="text/javascript">
-//limitDay,Integer type, Integer status,Integer userId
     $.ajax({
         type: "GET",
         url: "${sessionScope.SITE_URL}rest/inspect/record/count?limitDay=0&type=2",

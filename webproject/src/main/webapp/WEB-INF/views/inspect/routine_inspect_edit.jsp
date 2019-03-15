@@ -2,29 +2,31 @@
 <!---这相当于一个配置，该配置用于左侧菜单栏的显示，id为subPageName  [内容]为该页面的唯一标志  对应于outer.jsp文件中的左侧菜单栏的id-->
 <div id ="subPageName" hidden >menuInspectManagement</div>
 <link href="${sessionScope.STATIC_URL}css/iinspection.css" rel="stylesheet">
-<link href="//magicbox.bk.tencent.com/static_api/v3/assets/metisMenu-2.6.0/css/metisMenu.min.css" rel="stylesheet">
+<%--<link href="//magicbox.bk.tencent.com/static_api/v3/assets/metisMenu-2.6.0/css/metisMenu.min.css" rel="stylesheet">--%>
 <link href="${sessionScope.STATIC_URL}codemirror/theme/monokai.css" rel="stylesheet">
-<link href="//magicbox.bk.tencent.com/static_api/v3/assets/codemirror-5.11/lib/codemirror.css" rel="stylesheet">
+<link href="${sessionScope.STATIC_URL}codemirror/lib/codemirror.css" rel="stylesheet">
 <!-- 包括所有kendoui的js插件或者可以根据需要使用的js插件调用　-->
-<script src="//magicbox.bk.tencent.com/static_api/v3/assets/kendoui-2015.2.624/js/kendo.all.min.js"></script>
-<script src="//magicbox.bk.tencent.com/static_api/v3/assets/codemirror-5.11/lib/codemirror.js"></script>
+<%--<script src="//magicbox.bk.tencent.com/static_api/v3/assets/kendoui-2015.2.624/js/kendo.all.min.js"></script>--%>
+<script src="${sessionScope.STATIC_URL}codemirror/lib/codemirror.js"></script>
 <script src="${sessionScope.STATIC_URL}codemirror/mode/shell/shell.js"></script>
 
-<link href="//magicbox.bk.tencent.com/static_api/v3/assets/select2-3.5.2/select2.css" rel="stylesheet">
-<script src="//magicbox.bk.tencent.com/static_api/v3/assets/select2-3.5.2/select2.js"></script>
+<link href="${sessionScope.STATIC_URL}magicbox/select2-3.5.2/select2.css" rel="stylesheet">
+<script src="${sessionScope.STATIC_URL}magicbox/select2-3.5.2/select2.js"></script>
 <!-- 本地js -->
 
-<link href="//magicbox.bk.tencent.com/static_api/v3/assets/artDialog-6.0.4/css/ui-dialog.css" rel="stylesheet">
-<script src="//magicbox.bk.tencent.com/static_api/v3/assets/artDialog-6.0.4/dist/dialog-min.js"></script>
+<link href="${sessionScope.STATIC_URL}magicbox/artDialog-6.0.4/css/ui-dialog.css" rel="stylesheet">
+<script src="${sessionScope.STATIC_URL}magicbox/artDialog-6.0.4/dist/dialog-min.js"></script>
 
-<link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet"/>
+<link href="${sessionScope.STATIC_URL}css/jquery.dataTables.min.css" rel="stylesheet"/>
 
-<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-<%--<link href="https://magicbox.bk.tencent.com/static_api/v3/assets/datatables-1.10.7/dataTables.bootstrap.css" rel="stylesheet"/>--%>
-<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/datatables-1.10.7/jquery.dataTables.js"></script>
-<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/datatables-1.10.7/dataTables.bootstrap.js"></script>
+<script src="${sessionScope.STATIC_URL}js/jquery.dataTables.min.js"></script>
+<%--<link href="https:${sessionScope.STATIC_URL}magicbox/datatables-1.10.7/dataTables.bootstrap.css" rel="stylesheet"/>--%>
+<script src="${sessionScope.STATIC_URL}magicbox/datatables-1.10.7/jquery.dataTables.js"></script>
+<script src="${sessionScope.STATIC_URL}magicbox/datatables-1.10.7/dataTables.bootstrap.js"></script>
 
 <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
+<script src="${sessionScope.STATIC_URL}js/html5shiv.min.js"></script>
+<script src="${sessionScope.STATIC_URL}js/respond.min.js"></script>
 <!--[if lt IE 9]> -->
 
 <input  hidden id="routineInspectId" value="${routineInspectId}"/>
@@ -109,7 +111,7 @@
                                     </div>
                                 </div>
                                 <div  class="form-group" >
-                                    <label class="control-label col-sm-2 pt0" for="introduction">脚本内容：</label>
+                                    <label class="control-label col-sm-2 pt0" >脚本内容：</label>
                                     <div class="col-sm-9" style="border: 0px solid #ddd;" id="editor2_demo1">
 
                                         <textarea id="editor2_demo"></textarea>
@@ -123,7 +125,7 @@
 
 
                             <div class="form-group has-feedback clearfix ">
-                                <label class="control-label col-sm-2 pt0" for="introduction">参数：</label>
+                                <label class="control-label col-sm-2 pt0" >参数：</label>
                                 <div class="col-sm-9">
                                     <input id="paramData" type="text" class="form-control bk-valign-top"
                                            placeholder="请输入参数"> </div>
@@ -200,7 +202,7 @@
                 var ip = key;
                 var serverItem = "<li id=\"server_"+ip+"\" class=\"list-group-item\">" + ip +
                     "                <button  style=\"float: right\" type=\"button\"   class=\"btn btn-primary btn-danger btn-xs\">\n" +
-                    "                    <span  class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\n" +
+                    "                    <span   aria-hidden=\"true\">×</span>\n" +
                     "                </button>\n" +
                     "              </li>";
                 $('#serverList').append(serverItem);

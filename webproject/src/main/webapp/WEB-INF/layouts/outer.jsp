@@ -15,8 +15,8 @@
         var static_url = "${sessionScope.STATIC_URL}"; // 静态资源前缀，在js中引用资源时要加上这个前缀
     </script>
     <!-- Bootstrap css -->
-    <link href="//magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/css/bootstrap.min.css" rel="stylesheet">
-    <link href="//magicbox.bk.tencent.com/static_api/v3/assets/fontawesome/css/font-awesome.css" rel="stylesheet">
+    <link href="${sessionScope.STATIC_URL}magicbox/bootstrap-3.3.4/bootstrap.min.css" rel="stylesheet">
+    <link href="${sessionScope.STATIC_URL}magicbox/fontawesome-4.3.0/css/font-awesome.css" rel="stylesheet">
 
 
     <!-- 当前项目样式文件 -->
@@ -24,26 +24,26 @@
     <link href="${sessionScope.STATIC_URL}css/sb-bk-theme.css" rel="stylesheet">
     <!--蓝鲸平台APP 公用的样式文件 -->
 
-    <link href="//magicbox.bk.tencent.com/static_api/v3/bk/css/bk.css" rel="stylesheet">
+    <link href="${sessionScope.STATIC_URL}css/bk.css" rel="stylesheet">
 
     <!-- 如果要使用Bootstrap的js插件，必须先调入jQuery -->
-    <script src="//magicbox.bk.tencent.com/static_api/v3/assets/js/jquery-1.10.2.min.js"></script>
+    <script src="${sessionScope.STATIC_URL}magicbox/jquery-1.10.2.min.js"></script>
     <!-- 包括所有bootstrap的js插件或者可以根据需要使用的js插件调用　-->
-    <script src="//magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script src="${sessionScope.STATIC_URL}magicbox/bootstrap-3.3.4/bootstrap.min.js"></script>
     <!-- 包括所有kendoui的js插件或者可以根据需要使用的js插件调用　-->
-    <script src="//magicbox.bk.tencent.com/static_api/v3/assets/kendoui-2015.2.624/js/kendo.all.min.js"></script>
+   <%-- <script src="//magicbox.bk.tencent.com/static_api/v3/assets/kendoui-2015.2.624/js/kendo.all.min.js"></script>--%>
 
     <!--配置js  勿删-->
     <script src="${sessionScope.STATIC_URL}js/settings.js?v=${sessionScope.STATIC_VERSION}" type="text/javascript"></script>
     <!--蓝鲸平台APP 公用的样式文件 -->
-    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/bk-icon-2.0/iconfont.css" rel="stylesheet">
-    <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/base/common.css" rel="stylesheet">
-    <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/components/button.css" rel="stylesheet">
+    <link href="${sessionScope.STATIC_URL}magicbox/bk-icon-2.0/iconfont.css" rel="stylesheet">
+    <link href="${sessionScope.STATIC_URL}css/common.css" rel="stylesheet">
+    <link href="${sessionScope.STATIC_URL}css/button.css" rel="stylesheet">
 
     <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
     <!--[if lt IE 9]>
-    <script src="//magicbox.bk.tencent.com/static_api/v3/assets/js/html5shiv.min.js"></script>
-    <script src="//magicbox.bk.tencent.com/static_api/v3/assets/js/respond.min.js"></script>
+    <script src="${sessionScope.STATIC_URL}js/html5shiv.min.js"></script>
+    <script src="${sessionScope.STATIC_URL}js/respond.min.js"></script>
 
 
     <![endif]-->

@@ -5,23 +5,22 @@
 <link href="${sessionScope.STATIC_URL}css/iinspection.css" rel="stylesheet">
 <link href="//magicbox.bk.tencent.com/static_api/v3/assets/metisMenu-2.6.0/css/metisMenu.min.css" rel="stylesheet">
 <link href="${sessionScope.STATIC_URL}codemirror/theme/monokai.css" rel="stylesheet">
-<link href="//magicbox.bk.tencent.com/static_api/v3/assets/codemirror-5.11/lib/codemirror.css" rel="stylesheet">
+<link href="${sessionScope.STATIC_URL}codemirror/lib/codemirror.css" rel="stylesheet">
 <!-- 包括所有kendoui的js插件或者可以根据需要使用的js插件调用　-->
-<script src="//magicbox.bk.tencent.com/static_api/v3/assets/kendoui-2015.2.624/js/kendo.all.min.js"></script>
-<script src="//magicbox.bk.tencent.com/static_api/v3/assets/codemirror-5.11/lib/codemirror.js"></script>
+<%--<script src="//magicbox.bk.tencent.com/static_api/v3/assets/kendoui-2015.2.624/js/kendo.all.min.js"></script>--%>
+<script src="${sessionScope.STATIC_URL}codemirror/lib/codemirror.js"></script>
 <script src="${sessionScope.STATIC_URL}codemirror/mode/shell/shell.js"></script>
 
-<link href="//magicbox.bk.tencent.com/static_api/v3/assets/select2-3.5.2/select2.css" rel="stylesheet">
-<script src="//magicbox.bk.tencent.com/static_api/v3/assets/select2-3.5.2/select2.js"></script>
+<link href="${sessionScope.STATIC_URL}magicbox/select2-3.5.2/select2.css" rel="stylesheet">
+<script src="${sessionScope.STATIC_URL}magicbox/select2-3.5.2/select2.js"></script>
 <!-- 本地js -->
 
-<link href="//magicbox.bk.tencent.com/static_api/v3/assets/artDialog-6.0.4/css/ui-dialog.css" rel="stylesheet">
-<script src="//magicbox.bk.tencent.com/static_api/v3/assets/artDialog-6.0.4/dist/dialog-min.js"></script>
+<link href="${sessionScope.STATIC_URL}magicbox/artDialog-6.0.4/css/ui-dialog.css" rel="stylesheet">
+<script src="${sessionScope.STATIC_URL}magicbox/artDialog-6.0.4/dist/dialog-min.js"></script>
 
-<link href="https://magicbox.bk.tencent.com/static_api/v3/assets/datatables-1.10.7/dataTables.bootstrap.css" rel="stylesheet"/>
-<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/datatables-1.10.7/jquery.dataTables.js"></script>
-<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/datatables-1.10.7/dataTables.bootstrap.js"></script>
-<script src="//cdn.datatables.net/plug-ins/1.10.19/sorting/date-uk.js"></script>
+<link href="${sessionScope.STATIC_URL}magicbox/datatables-1.10.7/dataTables.bootstrap.css" rel="stylesheet"/>
+<script src="${sessionScope.STATIC_URL}magicbox/datatables-1.10.7/jquery.dataTables.js"></script>
+<script src="${sessionScope.STATIC_URL}magicbox/datatables-1.10.7/dataTables.bootstrap.js"></script>
 
 
 <style>

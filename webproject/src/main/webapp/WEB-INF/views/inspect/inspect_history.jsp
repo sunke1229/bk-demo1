@@ -4,20 +4,20 @@
 
 
 <!-- 删除提示的-->
-<link href="https://magicbox.bk.tencent.com/static_api/v3/assets/artDialog-6.0.4/css/ui-dialog.css" rel="stylesheet">
-<link href="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/daterangepicker.css" rel="stylesheet">
-<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/moment.min.js"></script>
-<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/daterangepicker-2.0.5/daterangepicker.js"></script>
+<link href="${sessionScope.STATIC_URL}magicbox/artDialog-6.0.4/css/ui-dialog.css" rel="stylesheet">
+<link href="${sessionScope.STATIC_URL}magicbox/daterangepicker-2.0.5/daterangepicker.css" rel="stylesheet">
+<script src="${sessionScope.STATIC_URL}magicbox/daterangepicker-2.0.5/moment.min.js"></script>
+<script src="${sessionScope.STATIC_URL}magicbox/daterangepicker-2.0.5/daterangepicker.js"></script>
 
-<link href="https://magicbox.bk.tencent.com/static_api/v3/assets/datatables-1.10.7/dataTables.bootstrap.css" rel="stylesheet"/>
-<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/datatables-1.10.7/jquery.dataTables.js"></script>
-<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/datatables-1.10.7/dataTables.bootstrap.js"></script>
-<script src="//cdn.datatables.net/plug-ins/1.10.19/sorting/date-uk.js"></script>
+<link href="${sessionScope.STATIC_URL}magicbox/datatables-1.10.7/dataTables.bootstrap.css" rel="stylesheet"/>
+<script src="${sessionScope.STATIC_URL}magicbox/datatables-1.10.7/jquery.dataTables.js"></script>
+<script src="${sessionScope.STATIC_URL}magicbox/datatables-1.10.7/dataTables.bootstrap.js"></script>
+
 
 <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
 <!--[if lt IE 9]>
-<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/html5shiv.min.js"></script>
-<script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/respond.min.js"></script>
+<script src="${sessionScope.STATIC_URL}js/html5shiv.min.js"></script>
+<script src="${sessionScope.STATIC_URL}js/respond.min.js"></script>
 <![endif]-->
 
 <div id="page-wrapper">
