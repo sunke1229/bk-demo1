@@ -251,7 +251,7 @@
                         var ip = key;
                         var serverItem = "<li id=\"server_"+ip+"\" class=\"list-group-item\">" + ip +
                             "                <button  style=\"float: right\" type=\"button\"   class=\"btn btn-primary btn-danger btn-xs\">\n" +
-                            "                    <span  class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\n" +
+                            "                    <span   aria-hidden=\"true\">×</span>\n" +
                             "                </button>\n" +
                             "              </li>";
                         $('#serverList').append(serverItem);
