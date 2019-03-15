@@ -256,6 +256,17 @@
                     url: "${sessionScope.SITE_URL}rest/inspect/execute",
                     data: JSON.stringify(jobData),
                     success: function(result){
+                        $('#runFastInspect').removeAttr("disabled");
+                        window.location.href="${sessionScope.SITE_URL}inspect/history/list";
+                    },
+                    dataType: "json",
+                    headers: {'Content-Type': 'application/json'}
+                });
+                /*$.ajax({
+                    method: 'POST',
+                    url: "${sessionScope.SITE_URL}rest/inspect/execute",
+                    data: JSON.stringify(jobData),
+                    success: function(result){
                         if(result.success==true){
                             dialog({
                                 width: 260,
@@ -273,7 +284,7 @@
                     },
                     dataType: "json",
                     headers: {'Content-Type': 'application/json'}
-                });
+                });*/
 
             },
             cancelValue: '取消',
