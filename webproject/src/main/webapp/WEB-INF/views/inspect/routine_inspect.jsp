@@ -102,7 +102,7 @@
             <div class='panel-body'>
                 <!-- 右下表格 start -->
                 <div class="king-wrapper clearfix">
-                    <a id="create_new" href="/inspect/routine/create" class="king-btn-demo king-btn king-info pull-right">
+                    <a id="create_new" href="${sessionScope.SITE_URL}inspect/routine/create" class="king-btn-demo king-btn king-info pull-right">
                         新建
                     </a>
                 </div>
@@ -193,7 +193,7 @@
                 data.modityTime=$("#searchModityTime").val()||"";
                 $.ajax({
                     type: "GET",
-                    url: "/rest/inspect/routine/list",
+                    url: "${sessionScope.SITE_URL}rest/inspect/routine/list",
                     cache: false, //禁用缓存
                     data: data, //传入组装的参数
                     dataType: "json",
@@ -211,10 +211,10 @@
                                     "              <i class=\"bk-icon icon-play2\"></i>\n" +
                                     "          </a>\n" +
                                     "          <span class=\"mr5\" style=\"border-left:1px solid #ddd;padding:0px 0 0px 10px;\"></span>\n" +
-                                    "          <a  href=\"/inspect/routine/detail/"+itemId+ "\" class=\"bk-icon-button bk-info edit-script\" title=\"详情\">\n" +
+                                    "          <a  href=\"${sessionScope.SITE_URL}inspect/routine/detail/"+itemId+ "\" class=\"bk-icon-button bk-info edit-script\" title=\"详情\">\n" +
                                     "               <i class=\"bk-icon icon-search\"></i>\n" +
                                     "          </a>\n" +
-                                    "          <a  href=\"/inspect/routine/edit/"+itemId+ "\" class=\"bk-icon-button bk-info edit-script\" title=\"编辑\">\n" +
+                                    "          <a  href=\"${sessionScope.SITE_URL}inspect/routine/edit/"+itemId+ "\" class=\"bk-icon-button bk-info edit-script\" title=\"编辑\">\n" +
                                     "               <i class=\"bk-icon icon-edit\"></i>\n" +
                                     "          </a>\n" +
                                     "          <a href=\"javascript:deleteInspect("+itemId+");\" class=\"dome-box confirmation-demo bk-icon-button bk-info delete-script\" title=\"删除\" data-toggle=\"confirmation-popout\" data-placement=\"left\" data-original-title=\"\">\n" +
@@ -253,7 +253,7 @@
                 };
                 $.ajax({
                     method: 'POST',
-                    url: "/rest/inspect/execute",
+                    url: "${sessionScope.SITE_URL}rest/inspect/execute",
                     data: JSON.stringify(jobData),
                     success: function(result){
                         if(result.success==true){
@@ -289,7 +289,7 @@
     function deleteInspect(id){
         $.ajax({
             type: "DELETE",
-            url: "/rest/inspect/routine/"+id+"/delete",
+            url: "${sessionScope.SITE_URL}rest/inspect/routine/"+id+"/delete",
             cache: false, //禁用缓存
             dataType: "json",
             success: function (result) {

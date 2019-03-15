@@ -20,8 +20,8 @@
 
 
     <!-- 当前项目样式文件 -->
-    <link href="/static/css/sb-admin.css" rel="stylesheet">
-    <link href="/static/css/sb-bk-theme.css" rel="stylesheet">
+    <link href="${sessionScope.STATIC_URL}css/sb-admin.css" rel="stylesheet">
+    <link href="${sessionScope.STATIC_URL}css/sb-bk-theme.css" rel="stylesheet">
     <!--蓝鲸平台APP 公用的样式文件 -->
 
     <link href="//magicbox.bk.tencent.com/static_api/v3/bk/css/bk.css" rel="stylesheet">
@@ -61,7 +61,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="${sessionScope.SITE_URL}">
                     <i class="fa fa-leaf f20 mr5"></i>
                     巡检管理系统
                 </a>
@@ -177,16 +177,16 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li id ="menuFirstPage" >
-                        <a href="/"><i class="fa fa-fw fa-dashboard"></i> 首页</a>
+                        <a href="${sessionScope.SITE_URL}"><i class="fa fa-fw fa-dashboard"></i> 首页</a>
                     </li>
                     <li id="menuInspectManagement">
                         <a href="javascript:;" data-toggle="collapse" data-target="#subMenuInspectManagement"><i class="fa fa-fw fa-arrows-v"></i> 巡检管理 <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="subMenuInspectManagement" class="collapse">
                             <li>
-                                <a href="/inspect/fast"><%--<i class="fa fa-fw fa-table"></i>--%> 快速巡检</a>
+                                <a href="${sessionScope.SITE_URL}inspect/fast"><%--<i class="fa fa-fw fa-table"></i>--%> 快速巡检</a>
                             </li>
                             <li>
-                                <a href="/inspect/routine"> 常规巡检</a>
+                                <a href="${sessionScope.SITE_URL}inspect/routine"> 常规巡检</a>
                             </li>
                             <%--<li>
                                 <a href="inspection_timing.html"> 定时巡检</a>
@@ -195,7 +195,7 @@
                     </li>
 
                     <li id ="menuInspectHistory">
-                        <a href="/inspect/history/list"><i class="fa fa-fw fa-edit"></i> 历史记录</a>
+                        <a href="${sessionScope.SITE_URL}inspect/history/list"><i class="fa fa-fw fa-edit"></i> 历史记录</a>
                     </li>
                     <%--<li id ="menuMessage">
                         <a href="exception_building.html"><i class="fa fa-fw fa-wrench"></i> 通知功能</a>
@@ -273,7 +273,7 @@
             dataType: "json",
             success: function (result) {
                 if(result.success==true){
-                    window.location.href="/";
+                    window.location.href="${sessionScope.SITE_URL}";
                 }else{
                     alert(result.message);
                 }

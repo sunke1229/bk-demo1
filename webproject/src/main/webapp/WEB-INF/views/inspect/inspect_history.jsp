@@ -178,7 +178,7 @@
                 data.inspectType=$("#inspectType").val()||"";
                 $.ajax({
                     type: "GET",
-                    url: "/rest/inspect/record/list",
+                    url: "${sessionScope.SITE_URL}rest/inspect/record/list",
                     cache: false, //禁用缓存
                     data: data, //传入组装的参数
                     dataType: "json",
@@ -193,7 +193,7 @@
                             var showData = result.data.content.map(function (item) {
                                 var itemId = item.id;
                                 var option =
-                                    "          <a  href=\"/inspect/history/detail/"+itemId+ "\" class=\"bk-icon-button bk-info edit-script\" title=\"详情\">\n" +
+                                    "          <a  href=\"${sessionScope.SITE_URL}inspect/history/detail/"+itemId+ "\" class=\"bk-icon-button bk-info edit-script\" title=\"详情\">\n" +
                                     "               <i class=\"bk-icon icon-search\"></i>\n" ;
 
                                 var inspectType = "";

@@ -124,7 +124,7 @@
 //limitDay,Integer type, Integer status,Integer userId
     $.ajax({
         type: "GET",
-        url: "/rest/inspect/record/count?limitDay=0&type=2",
+        url: "${sessionScope.SITE_URL}rest/inspect/record/count?limitDay=0&type=2",
         cache: false, //禁用缓存
         dataType: "json",
         success: function (result) {
@@ -136,7 +136,7 @@
     });
     $.ajax({
         type: "GET",
-        url: "/rest/inspect/record/count?limitDay=0&type=2&userId=-2",
+        url: "${sessionScope.SITE_URL}rest/inspect/record/count?limitDay=0&type=2&userId=-2",
         cache: false, //禁用缓存
         dataType: "json",
         success: function (result) {
@@ -148,7 +148,7 @@
     });
     $.ajax({
         type: "GET",
-        url: "/rest/inspect/record/count?limitDay=0",
+        url: "${sessionScope.SITE_URL}rest/inspect/record/count?limitDay=0",
         cache: false, //禁用缓存
         dataType: "json",
         success: function (result) {
@@ -160,7 +160,7 @@
     });
     $.ajax({
         type: "GET",
-        url: "/rest/inspect/record/count?limitDay=0&userId=-2",
+        url: "${sessionScope.SITE_URL}rest/inspect/record/count?limitDay=0&userId=-2",
         cache: false, //禁用缓存
         dataType: "json",
         success: function (result) {

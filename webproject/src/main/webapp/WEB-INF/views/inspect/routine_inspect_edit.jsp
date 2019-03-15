@@ -1,14 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!---这相当于一个配置，该配置用于左侧菜单栏的显示，id为subPageName  [内容]为该页面的唯一标志  对应于outer.jsp文件中的左侧菜单栏的id-->
 <div id ="subPageName" hidden >menuInspectManagement</div>
-<link href="/static/css/iinspection.css" rel="stylesheet">
+<link href="${sessionScope.STATIC_URL}css/iinspection.css" rel="stylesheet">
 <link href="//magicbox.bk.tencent.com/static_api/v3/assets/metisMenu-2.6.0/css/metisMenu.min.css" rel="stylesheet">
-<link href="/static/codemirror/theme/monokai.css" rel="stylesheet">
+<link href="${sessionScope.STATIC_URL}codemirror/theme/monokai.css" rel="stylesheet">
 <link href="//magicbox.bk.tencent.com/static_api/v3/assets/codemirror-5.11/lib/codemirror.css" rel="stylesheet">
 <!-- 包括所有kendoui的js插件或者可以根据需要使用的js插件调用　-->
 <script src="//magicbox.bk.tencent.com/static_api/v3/assets/kendoui-2015.2.624/js/kendo.all.min.js"></script>
 <script src="//magicbox.bk.tencent.com/static_api/v3/assets/codemirror-5.11/lib/codemirror.js"></script>
-<script src="/static/codemirror/mode/shell/shell.js"></script>
+<script src="${sessionScope.STATIC_URL}codemirror/mode/shell/shell.js"></script>
 
 <link href="//magicbox.bk.tencent.com/static_api/v3/assets/select2-3.5.2/select2.css" rel="stylesheet">
 <script src="//magicbox.bk.tencent.com/static_api/v3/assets/select2-3.5.2/select2.js"></script>
@@ -43,7 +43,7 @@
             <div class='panel-body'>
                 <!-- 右侧内部表单 start -->
                 <form class="form-horizontal">
-                    <a href="/inspect/routine" class="bk-icon icon-back2">返回</a>
+                    <a href="${sessionScope.SITE_URL}inspect/routine" class="bk-icon icon-back2">返回</a>
                     <div class="king-block king-block-bordered king-block-themed m5">
                         <div class="king-block-content">
                             <div class="form-group clearfix ">
@@ -255,7 +255,7 @@
                 param.currentPage = (data.start / data.length) + 1;//当前页码*/
                 $.ajax({
                     type: "GET",
-                    url: "/rest/inspect/host/list",
+                    url: "${sessionScope.SITE_URL}rest/inspect/host/list",
                     cache: false, //禁用缓存
                     data: data, //传入组装的参数
                     dataType: "json",
@@ -337,13 +337,13 @@
         console.log(routineInspectData);
         $.ajax({
             method: 'POST',
-            url: "/rest/inspect/routine/update",
+            url: "${sessionScope.SITE_URL}rest/inspect/routine/update",
             data: JSON.stringify(routineInspectData),
             success: function(result){
                 $('#saveInspect').removeAttr("disabled");
                 if(result.success==true){
                     console.log(result);
-                    window.location.href="/inspect/routine";
+                    window.location.href="${sessionScope.SITE_URL}inspect/routine";
                 }else{
                     alert(result.message);
                 }
@@ -385,7 +385,7 @@
     function loadScriptList(scriptId) {
         var scriptSelect = $("#script_list");
         $("#script_list").val(scriptId);
-        $.get("/rest/inspect/script/list", function(result){
+        $.get("${sessionScope.SITE_URL}rest/inspect/script/list", function(result){
             result = JSON.parse(result)
             if(result&&result.result==true){
                 var data = result.data.data;
@@ -406,7 +406,7 @@
 
     function loadScriptTag(e) {
         var id = e.val;
-        $.get("/rest/inspect/script/detail/"+id, function(result){
+        $.get("${sessionScope.SITE_URL}rest/inspect/script/detail/"+id, function(result){
             result = JSON.parse(result)
             var allScriptType = ["","shell","bat","perl","python","powershell","sql"];
 
@@ -429,7 +429,7 @@
         var id = $("#routineInspectId").val();
         $.ajax({
             type: "GET",
-            url: "/rest/inspect/routine/"+id,
+            url: "${sessionScope.SITE_URL}rest/inspect/routine/"+id,
             cache: false, //禁用缓存
             dataType: "json",
             success: function (result) {
