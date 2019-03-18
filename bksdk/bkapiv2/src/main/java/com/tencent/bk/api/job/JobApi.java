@@ -108,11 +108,20 @@ public class JobApi extends Api {
 
 
     /**
-     * 查询脚本列表
+     * 查询脚本详情
      */
     public ApiResp<Script> getScriptDetail(GetScriptDetailReq esbReq) {
         return invokePost("/api/c/compapi/v2/job/get_script_detail/", esbReq,
                 new TypeReference<ApiResp<Script>>() {
+                });
+    }
+
+    /**
+     * 查询账号列表
+     */
+    public ApiResp<List<Account>> getAccountList(GetAccountListReq esbReq) {
+        return invokePost("/api/c/compapi/v2/job/get_os_account/", esbReq,
+                new TypeReference<ApiResp<List<Account>>>() {
                 });
     }
 

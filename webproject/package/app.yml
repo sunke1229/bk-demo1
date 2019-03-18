@@ -2,12 +2,12 @@
 language: java
 # 请跟运营确认app_code，app_name, introduction, author等
 # Smart应用id
-app_code: bkjava
+app_code: bk-inspect
 # Smart应用名称
 app_name: java开发框架Smart
 # 应用开发商 创建者： 蓝鲸智云、嘉为蓝鲸、皓西科技、红雨创展、齐治科技、用户自建、其它 (内部开发的公共app用：蓝鲸智云)
 #（官方和这几个合作伙伴要内置进去，有应用的话显示该分类，没有的话不显示；配置平台和作业平台，属于“蓝鲸官方”）
-author: 蓝鲸智云
+author: 用户自建
 # Smart应用的描述
 introduction: Smart for java
 # 版本号自行维护, 每次修改变更, 必须更新版本号

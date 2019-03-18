@@ -18,10 +18,7 @@ import com.tencent.bk.api.cc.model.Page;
 import com.tencent.bk.api.cc.req.SearchHostReq;
 import com.tencent.bk.api.job.JobApi;
 import com.tencent.bk.api.job.model.StepInstanceAnalysis;
-import com.tencent.bk.api.job.req.GetJobInstanceLogReq;
-import com.tencent.bk.api.job.req.GetJobListReq;
-import com.tencent.bk.api.job.req.GetScriptDetailReq;
-import com.tencent.bk.api.job.req.GetScriptListReq;
+import com.tencent.bk.api.job.req.*;
 import com.tencent.bk.api.protocol.ApiResp;
 import com.tencent.bk.utils.json.JsonUtil;
 import org.slf4j.Logger;
@@ -71,6 +68,16 @@ public class InspectController extends BaseController {
         User user = getLocalUser();
         req.setBkBizId(user.getBizId().intValue());
         return JsonUtil.toJson(jobApi.getJobList(req));
+    }
+
+
+    @RequestMapping(value ="/inspect/account/list",method ={RequestMethod.GET})
+    @ResponseBody
+    public String accountList()  {
+        GetAccountListReq req = jobApi.makeBaseReqByWeb(GetAccountListReq.class,request);
+        User user = getLocalUser();
+        req.setBkBizId(user.getBizId().intValue());
+        return JsonUtil.toJson(jobApi.getAccountList(req));
     }
 
     @RequestMapping(value ="/inspect/script/list",method ={RequestMethod.GET})

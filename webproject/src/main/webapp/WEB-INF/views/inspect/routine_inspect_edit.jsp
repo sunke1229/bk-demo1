@@ -57,9 +57,7 @@
                             <div class="form-group clearfix ">
                                 <label class="col-sm-2 control-label bk-lh30 pt0">服务器账户：</label>
                                 <div class="col-sm-9">
-                                    <select id="accountData" value="root"  class="form-control bk-valign-top">
-                                        <option value="root" >root</option>
-                                        <option value="system">system</option>
+                                    <select id="accountData"  class="form-control bk-valign-top">
                                     </select>
                                 </div>
                             </div>
@@ -383,6 +381,19 @@
         }
     });
 
+    function loadAccount(account) {
+        $.get("${sessionScope.SITE_URL}rest/inspect/account/list", function(result){
+            result = JSON.parse(result)
+            if(result.result==true){
+                result.data.forEach(function (item) {
+                    var  option = "<option value='"+item.account+"'>"+item.account+"</option>";
+                    $("#accountData").append(option);
+                })
+                $("#accountData").val(account);
+            }
+        });
+    }
+
 
     function loadScriptList(scriptId) {
         var scriptSelect = $("#script_list");
@@ -439,9 +450,11 @@
                     $("input:radio[name=inspectType][value="+result.data.type+"]").click();
                     $('#inspectName').val(result.data.name);
                     var step = result.data.inspectStep;
+                    console.log(step);
                     $("#paramData").val(step.param);
                     $("#timeoutData").val(step.timeout);
-                    $('#accountData').val(step.account);
+                    $("#accountData").val(step.account+"");
+                    $("#accountData").val(step.account);
                     var ipList = JSON.parse(step.ipList);
                     if(ipList){
                         ipList.forEach(function (item) {
@@ -450,6 +463,7 @@
                     }
                     loadServerHostList(selected);
                     loadScriptList(step.scriptId);
+                    loadAccount(step.account);
                 }
             }
         });
