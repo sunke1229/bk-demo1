@@ -15,6 +15,7 @@ import com.bocloud.blueking.model.db.InspectTemplate;
 import com.bocloud.blueking.model.db.RoutineInspect;
 import com.bocloud.blueking.repository.InspectTemplateRepository;
 import com.bocloud.blueking.repository.RoutineInspectRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -102,15 +103,14 @@ public class RoutineInspectServiceImpl implements RoutineInspectService {
 
     @Override
     public RespDto<RoutineInspect> update(RoutineInspect routineInspect,Long userId)  {
-        RoutineInspect beanInDb = routineInspectRepository.findOne(routineInspect.getId());
+        RoutineInspect beanInDb = this.get(routineInspect.getId()).getData();
         if(beanInDb==null){
             return  RespHelper.fail(9999,"未查询到要修改的常规巡检");
         }
-        BeanUtils.copyProperties(beanInDb,routineInspect, IgnorePropertiesUtil.getNullPropertyNames(beanInDb));
+        BeanUtils.copyProperties(routineInspect,beanInDb,IgnorePropertiesUtil.getNullPropertyNames(routineInspect));
         routineInspect.modifyNow(userId);
         try{
-            return RespHelper.ok(baseSave(routineInspect,userId));
-
+            return RespHelper.ok(baseSave(beanInDb,userId));
         }catch (BusinessException e){
             return  RespHelper.fail(e.getCode(),e.getMessage());
         }

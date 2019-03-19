@@ -90,14 +90,15 @@ public class InspectTemplateServiceImpl implements InspectTemplateService {
             if(beanInDb==null){
                 return  RespHelper.fail(9999,"未查询到要修改的巡检模板");
             }
-            BeanUtils.copyProperties(beanInDb,inspectTemplate, IgnorePropertiesUtil.getNullPropertyNames(beanInDb));
+            BeanUtils.copyProperties(inspectTemplate, beanInDb,IgnorePropertiesUtil.getNullPropertyNames(inspectTemplate));
             inspectTemplate.modifyNow(userId);
             inspectStepRepository.deleteByIdsIn(inspectTemplate.getStepIds() ,userId);
+            inspectTemplate.modifyNow(userId);
+            return  RespHelper.ok(saveBase(beanInDb,userId));
         }else{
             //TODO ERROR
+            return null;
         }
-        inspectTemplate.modifyNow(userId);
-        return  RespHelper.ok(saveBase(inspectTemplate,userId));
     }
 
 

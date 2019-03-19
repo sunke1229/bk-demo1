@@ -85,9 +85,9 @@ public class TimingInspectServiceImpl implements TimingInspectService {
         if(beanInDb==null){
             return  RespHelper.fail(9999,"未查询到要修改的定时巡检");
         }
-        BeanUtils.copyProperties(beanInDb,timingInspect, IgnorePropertiesUtil.getNullPropertyNames(beanInDb));
+        BeanUtils.copyProperties(timingInspect, beanInDb,IgnorePropertiesUtil.getNullPropertyNames(timingInspect));
         timingInspect.modifyNow(userId);
-        return  RespHelper.ok(this.baseSave(timingInspect,userId));
+        return  RespHelper.ok(this.baseSave(beanInDb,userId));
     }
 
 

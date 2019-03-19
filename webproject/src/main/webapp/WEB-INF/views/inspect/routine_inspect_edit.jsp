@@ -80,7 +80,7 @@
                                 <label class="col-sm-2 control-label bk-lh30 pt0">巡检来源<span class="red">&nbsp;*</span>：</label>
                                 <div class="col-sm-9">
                                     <label class="radio-inline"> <input   type="radio" value="0" name="inspectType">公共脚本</label>
-                                    <label class="radio-inline"> <input   type="radio" value="1" name="inspectType">巡检模板</label>
+                                   <%-- <label class="radio-inline"> <input   type="radio" value="1" name="inspectType">巡检模板</label>--%>
                                 </div>
                             </div>
                             <div class="form-group"  hidden id="inspectionTemplate">
@@ -132,13 +132,13 @@
                             <div class="form-group clearfix ">
                                 <label class="col-sm-2 control-label bk-lh30 pt0">超时时间(s)：</label>
                                 <div class="col-sm-9">
-                                    <input type="text"  id = "timeoutData" class="form-control bk-valign-top"  placeholder="请输入超时时间">
+                                    <input type="number"  id = "timeoutData" class="form-control bk-valign-top"  placeholder="请输入超时时间">
                                 </div>
                             </div>
                             <div class="form-group clearfix">
                                 <div class="col-sm-9 col-sm-offset-3">
                                     <button type="button" id="saveInspect" class="king-btn mr10  king-success" onclick="">保存</button>
-                                    <button type="button" class="king-btn king-default ">取消</button>
+                                    <button type="button"  onclick = "backRoutine()"  class="king-btn king-default ">取消</button>
                                 </div>
                             </div>
 
@@ -345,8 +345,24 @@
                     console.log(result);
                     window.location.href="${sessionScope.SITE_URL}inspect/routine";
                 }else{
-                    alert(result.message);
+                    dialog({
+                        width: 260,
+                        content: result.message,
+                        okValue: '确定',
+                        ok:function () {
+                        }
+                    }).show();
                 }
+            },
+            error:function () {
+                $('#saveInspect').removeAttr("disabled");
+                dialog({
+                    width: 260,
+                    content: "服务器异常",
+                    okValue: '确定',
+                    ok:function () {
+                    }
+                }).show();
             },
             dataType: "json",
             headers: {'Content-Type': 'application/json'}
@@ -467,6 +483,10 @@
                 }
             }
         });
+    }
+
+    function backRoutine() {
+        window.location.href="${sessionScope.SITE_URL}inspect/routine";
     }
     onload = loadRoutineInspect();
 </script>

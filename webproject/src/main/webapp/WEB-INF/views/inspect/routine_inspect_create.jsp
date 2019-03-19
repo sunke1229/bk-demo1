@@ -126,13 +126,12 @@
                             <div class="form-group clearfix ">
                                 <label class="col-sm-2 control-label bk-lh30 pt0">超时时间(s)：</label>
                                 <div class="col-sm-9">
-                                    <input type="text"  id = "timeoutData" class="form-control bk-valign-top"  placeholder="请输入超时时间">
+                                    <input type="number"  id = "timeoutData" class="form-control bk-valign-top"  placeholder="请输入超时时间">
                                 </div>
                             </div>
                             <div class="form-group clearfix">
                                 <div class="col-sm-9 col-sm-offset-3">
                                     <button type="button" id="saveInspect" class="king-btn mr10  king-success" onclick="">保存</button>
-                                    <button type="button" class="king-btn king-default ">取消</button>
                                 </div>
                             </div>
 
@@ -414,7 +413,13 @@
                 if(result.success==true){
                     window.location.href="${sessionScope.SITE_URL}inspect/routine";
                 }else{
-                    alert(result.message);
+                    dialog({
+                        width: 260,
+                        content: result.message,
+                        okValue: '确定',
+                        ok:function () {
+                        }
+                    }).show();
                 }
             },
             dataType: "json",

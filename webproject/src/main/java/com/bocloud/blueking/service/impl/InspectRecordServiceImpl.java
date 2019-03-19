@@ -63,15 +63,14 @@ public class InspectRecordServiceImpl implements InspectRecordService {
 
     @Override
     public RespDto<InspectRecord> update(InspectRecord inspectRecord, Long userId)  {
-        List<InspectRecordJobInstance> inspectRecordJobInstances = inspectRecordJobInstanceRepository.findByInspectRecordId(inspectRecord.getId());
         inspectRecordJobInstanceRepository.deleteByInspectRecordId(inspectRecord.getId(),userId);
         InspectRecord beanInDb = inspectRecordRepository.findOne(inspectRecord.getId());
         if(beanInDb==null){
             return  RespHelper.fail(9999,"未查询到要修改的巡检记录");
         }
-        BeanUtils.copyProperties(beanInDb,inspectRecord, IgnorePropertiesUtil.getNullPropertyNames(beanInDb));
+        BeanUtils.copyProperties(inspectRecord, beanInDb,IgnorePropertiesUtil.getNullPropertyNames(inspectRecord));
         inspectRecord.modifyNow(userId);
-        return  RespHelper.ok(baseSave(inspectRecord,userId));
+        return  RespHelper.ok(baseSave(beanInDb,userId));
     }
     @Transactional
     @Override

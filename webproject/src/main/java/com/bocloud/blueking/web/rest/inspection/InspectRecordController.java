@@ -44,7 +44,7 @@ public class InspectRecordController extends BaseController {
     @RequestMapping(value ="/inspect/record/{id}" ,method ={RequestMethod.GET})
     @ResponseBody
     public  String  get(@PathVariable("id") Long id){
-        //TODO  多租户需要考虑 bizId过滤记录
+        //TODO  多租户需要考虑 bizId过滤记录 防止权限泄露
         return JsonUtil.toJson(inspectRecordService.get(id));
     }
 

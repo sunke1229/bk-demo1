@@ -5,11 +5,13 @@ import com.bocloud.blueking.common.exception.BusinessException;
 import com.bocloud.blueking.common.util.IdsUtil;
 import com.bocloud.blueking.dto.RespDto;
 import com.bocloud.blueking.helper.RespHelper;
+import com.bocloud.blueking.model.db.InspectStep;
 import com.bocloud.blueking.model.db.RoutineInspect;
 import com.bocloud.blueking.model.db.User;
 import com.bocloud.blueking.repository.UserRepository;
 import com.bocloud.blueking.service.RoutineInspectService;
 import com.bocloud.blueking.web.BaseController;
+import com.tencent.bk.api.job.model.IP;
 import com.tencent.bk.utils.json.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -115,10 +117,32 @@ public class RoutineInspectController extends BaseController {
     @RequestMapping(value="/inspect/routine/save",method ={RequestMethod.POST})
     @ResponseBody
     public String save(@RequestBody RoutineInspect routineInspect){
-        User user = getLocalUser();
+
         if(routineInspect==null){
             return  JsonUtil.toJson(RespHelper.fail(9999,"json body 不能为空"));
         }
+
+        if(StringUtils.isEmpty(routineInspect.getName())){
+            return  JsonUtil.toJson(RespHelper.fail(9999,"请输入巡检名称"));
+        }
+        InspectStep step = routineInspect.getInspectStep();
+        if(step==null){
+            return  JsonUtil.toJson(RespHelper.fail(9999,"请填写步骤信息"));
+        }
+        List<IP>  ips =JsonUtil.fromJson(step.getIpList(),List.class) ;
+        if(ips==null||ips.size()<=0){
+            return   JsonUtil.toJson(RespHelper.fail(9999,"请选择服务器"));
+        }
+        if(step.getScriptId()==null||step.getScriptId()<0){
+            return  JsonUtil.toJson(RespHelper.fail(9999,"请选择脚本"));
+        }
+        if(step.getTimeout()==null||step.getTimeout()==0){
+            return   JsonUtil.toJson(RespHelper.fail(9999,"请输入超时时间"));
+        }
+
+
+
+        User user = getLocalUser();
         routineInspect.setBizId(user.getBizId());
         RespDto a = routineInspectService.save(routineInspect,user.getId());
         return JsonUtil.toJson(a);
@@ -132,8 +156,26 @@ public class RoutineInspectController extends BaseController {
             return JsonUtil.toJson(RespHelper.fail(9999,"json body 不能为空"));
         }
         if(routineInspect.getId()==null){
-            return JsonUtil.toJson(RespHelper.fail(9999,"id 不能为空"));
+            return JsonUtil.toJson(RespHelper.fail(9999,"需要修改的常规巡检id不能为空"));
         }
+        if(StringUtils.isEmpty(routineInspect.getName())){
+            return  JsonUtil.toJson(RespHelper.fail(9999,"请输入巡检名称"));
+        }
+        InspectStep step = routineInspect.getInspectStep();
+        if(step==null){
+            return  JsonUtil.toJson(RespHelper.fail(9999,"请填写步骤信息"));
+        }
+        List<IP>  ips =JsonUtil.fromJson(step.getIpList(),List.class) ;
+        if(ips==null||ips.size()<=0){
+            return   JsonUtil.toJson(RespHelper.fail(9999,"请选择服务器"));
+        }
+        if(step.getScriptId()==null||step.getScriptId()<0){
+            return  JsonUtil.toJson(RespHelper.fail(9999,"请选择脚本"));
+        }
+        if(step.getTimeout()==null||step.getTimeout()==0){
+            return   JsonUtil.toJson(RespHelper.fail(9999,"请输入超时时间"));
+        }
+
         return JsonUtil.toJson(routineInspectService.update(routineInspect,userId));
     }
 

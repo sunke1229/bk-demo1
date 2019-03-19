@@ -130,13 +130,12 @@
                             <div class="form-group clearfix ">
                                 <label class="col-sm-2 control-label bk-lh30 pt0">超时时间(s)：</label>
                                 <div class="col-sm-9">
-                                    <input type="text"  id = "timeoutData" class="form-control bk-valign-top"  placeholder="请输入超时时间">
+                                    <input type="number"  id = "timeoutData" class="form-control bk-valign-top"  placeholder="请输入超时时间">
                                 </div>
                             </div>
                             <div class="form-group clearfix">
                                 <div class="col-sm-9 col-sm-offset-3">
                                     <button type="button" id="runFastInspect" class="king-btn mr10  king-success" onclick="">执行</button>
-                                    <button type="button" class="king-btn king-default ">取消</button>
                                 </div>
                             </div>
 
@@ -386,7 +385,6 @@
             } else {
                 selected.delete( ip );
             }
-
             $(this).toggleClass('selected');
         } );
     }
@@ -414,10 +412,30 @@
             data: JSON.stringify(jobData),
             success: function(result){
                 $('#runFastInspect').removeAttr("disabled");
-                window.location.href="${sessionScope.SITE_URL}inspect/history/list";
+                if(result.success==true){
+                    window.location.href="${sessionScope.SITE_URL}inspect/history/list";
+                }else{
+                    dialog({
+                        width: 260,
+                        content: result.message,
+                        okValue: '确定',
+                        ok:function () {
+                        }
+                    }).show();
+                }
             },
             dataType: "json",
-            headers: {'Content-Type': 'application/json'}
+            headers: {'Content-Type': 'application/json'},
+            error:function () {
+                $('#runFastInspect').removeAttr("disabled");
+                dialog({
+                    width: 260,
+                    //title: '提示',
+                    content: '服务器异常',
+                    okValue: '确定',
+                    ok:function () {}
+                }).show();
+            }
         });
     } );
 

@@ -19,6 +19,7 @@ import com.tencent.bk.api.job.req.GetJobInstanceStatusReq;
 import com.tencent.bk.api.protocol.ApiResp;
 import com.tencent.bk.core.init.BkCoreProperties;
 import com.tencent.bk.utils.json.JsonUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -108,6 +109,10 @@ public class JobServiceImpl implements JobService {
     }
 
     private RespDto<InspectRecord> executeRoutineInspect(JobData data,Long userId,String userName , Long bizId, HttpServletRequest request) throws BusinessException {
+        if (data.getReferenceId()==null) {
+            return  RespHelper.fail(9999,"常规巡检id不能为空");
+        }
+
         RoutineInspect routineInspect = routineInspectService.get(data.getReferenceId()).getData();
         Integer type  = routineInspect.getType();
         Long instanceId ;
@@ -147,6 +152,21 @@ public class JobServiceImpl implements JobService {
     }
 
     private RespDto<InspectRecord> executeScript(JobData data,Long userId,String userName ,Long bizId, HttpServletRequest request) throws BusinessException {
+        if(StringUtils.isEmpty(data.getName())){
+            return  RespHelper.fail(9999,"请输入巡检名称");
+        }
+        if(data.getIpList()==null||data.getIpList().size()<=0){
+            return  RespHelper.fail(9999,"请选择服务器");
+        }
+        if(StringUtils.isEmpty(data.getAccount())){
+            return  RespHelper.fail(9999,"请选择执行账户");
+        }
+        if(data.getReferenceId()==null||data.getReferenceId()<0){
+            return RespHelper.fail(9999,"请选择脚本");
+        }
+        if(data.getTimeout()==null||data.getTimeout()==0){
+            return  RespHelper.fail(9999,"请输入超时时间");
+        }
         FastExecuteScriptReq req =jobApi.makeBaseReqByWeb(FastExecuteScriptReq.class,request);
 
         InspectStep step = InspectStep.parse(data);
