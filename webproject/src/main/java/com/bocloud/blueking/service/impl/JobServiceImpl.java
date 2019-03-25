@@ -143,7 +143,7 @@ public class JobServiceImpl implements JobService {
         InspectRecord record = new InspectRecord();
         record.setType(data.getType());
         record.setUserName(userName);
-        record.setName("常规巡检-"+System.currentTimeMillis());
+        record.setName("常规巡检-"+routineInspect.getName()+"-"+System.currentTimeMillis());
         record.setBizId(bizId);
         List<InspectRecordJobInstance> list  = new ArrayList<>();
         list.add(instance);

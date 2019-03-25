@@ -17,7 +17,7 @@
     <properties>
         <!-- 在蓝鲸智云开发者中心 -> 点击应用ID -> 基本信息 中获取 APP_ID
                 最终出包将以APP_ID作为标识命名  -->
-        <pkg.app.id>bk-inspect</pkg.app.id>
+        <pkg.app.id>hxbcc-inspection</pkg.app.id>
 
         <!-- 此处修改为你的SpringBoot 启动类，也可直接用默认的 -->
         <mainClass>com.tencent.examples.BkWebApplication</mainClass>
